@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('followers', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->bigInteger('user_id1');
-            $table->bigInteger('user_id2');
+            $table->unsignedBigInteger('user_id1');
+            $table->unsignedBigInteger('user_id2');
             $table->timestamps();
 
             $table->foreign('user_id1')

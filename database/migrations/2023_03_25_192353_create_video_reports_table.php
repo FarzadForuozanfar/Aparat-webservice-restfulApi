@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('video_reports', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->bigInteger('report_category_id');
-            $table->bigInteger('user_id');
-            $table->bigInteger('video_id');
+            $table->unsignedBigInteger('report_category_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('video_id');
             $table->text('info');
             $table->smallInteger('first_time')->nullable();
             $table->smallInteger('second_time')->nullable();
@@ -27,7 +29,7 @@ return new class extends Migration
             ->onUpdate('cascade');
 
             $table->foreign('report_category_id')
-            ->references('id')->on('video_report_categoies')
+            ->references('id')->on('video_report_categories')
             ->onDelete('cascade')
             ->onUpdate('cascade');
 

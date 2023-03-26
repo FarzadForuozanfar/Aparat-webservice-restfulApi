@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->bigInteger('video_id');
-            $table->bigInteger('user_id');
-            $table->bigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('video_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->text('body');
             $table->timestamp('accepted_at')->nullable();
 

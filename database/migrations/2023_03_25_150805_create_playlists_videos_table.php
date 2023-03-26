@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('playlists_videos', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->bigInteger('playlist_id');
-            $table->bigInteger('video_id');
+            $table->unsignedBigInteger('playlist_id');
+            $table->unsignedBigInteger('video_id');
 
             $table->timestamps();
             $table->foreign('playlist_id')

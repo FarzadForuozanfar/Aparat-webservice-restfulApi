@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('channels', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('info');
             $table->string('banner')->nullable();
             $table->text('socials')->nullable();

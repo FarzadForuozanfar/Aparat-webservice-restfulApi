@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('video_report_categories', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
             $table->string('title', 100);
             $table->timestamps();

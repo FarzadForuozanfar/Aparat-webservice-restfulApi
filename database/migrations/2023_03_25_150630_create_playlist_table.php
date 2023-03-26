@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('playlist', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
-            $table->string('title', 100);
-            $table->string('icon', 50);
-            $table->string('banner')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->string('title', 200);
+
             $table->timestamps();
+            $table->foreign('user_id')
+            ->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('playlist');
     }
 };

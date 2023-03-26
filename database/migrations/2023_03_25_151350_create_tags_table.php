@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tags', function (Blueprint $table) {
+            $table->engine = "InnoDB";
             $table->id();
             $table->string('title');
             $table->timestamps();
