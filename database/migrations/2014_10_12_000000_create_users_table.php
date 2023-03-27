@@ -16,8 +16,8 @@ return new class extends Migration
             $table->engine = "InnoDB";
             $table->id();
             $table->string('name');
-            $table->string('email', 191)->unique();
-            $table->string('mobile', 13)->unique();
+            $table->string('email', 191)->unique()->nullable();
+            $table->string('mobile', 13)->unique()->nullable();
             $table->string('password');
             $table->enum('type', User::TYPES)->default(User::USER_TYPE);
             $table->string('avatar', 100)->nullable();
