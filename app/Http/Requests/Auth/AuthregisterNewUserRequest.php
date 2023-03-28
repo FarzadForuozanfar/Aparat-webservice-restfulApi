@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AuthregisterNewUserRequest extends FormRequest
@@ -22,7 +23,7 @@ class AuthregisterNewUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mobile' => 'required_without:email|max:13|min:11',
+            'mobile' => ['required_without:email|max:13|min:11', new MobileRule],
             'email' => 'required_without:mobile|email'
         ];
     }

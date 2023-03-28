@@ -55,4 +55,10 @@ class User extends Authenticatable
         $user = static::where('mobile',$username)->orwhere('email',$username)->first();
         return $user;
     }
+
+    public function setMobileAttribute($value)
+    {
+        $mobile = '+98' . substr($value, -10, 10);
+        $this->attributes['mobile'] = $mobile;
+    }
 }

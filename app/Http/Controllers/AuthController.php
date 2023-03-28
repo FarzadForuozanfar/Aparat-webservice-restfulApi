@@ -18,7 +18,6 @@ class AuthController extends Controller
         $field = $request->has('email') ? 'email' : 'mobile';
         $value = $request->input($field);
         // $key   = "user-auth-register-" . $value;
-        $code  = rand(100000,900000);
         // $expiration = config('auth.register_cache_expiration', 1);
         // Cache::put($key, compact('code', 'field'), now()->addDays($expiration));
         // dd(Cache::get($key), $key, $expiration, $code);
@@ -31,6 +30,7 @@ class AuthController extends Controller
             }
             return response(['message' => 'کد فعالسازی برای شما قبلا ارسال شده است'], 200);
         }
+        $code  = rand(100000,900000);
         $user = User::create([
             $field => $value,
             'verified_code' => $code

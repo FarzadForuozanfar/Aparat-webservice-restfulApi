@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterVerifyUserRequest extends FormRequest
@@ -23,7 +24,7 @@ class RegisterVerifyUserRequest extends FormRequest
     {
         return [
             'code' => 'required|string',
-            'mobile' => 'required_without:email|max:13|min:11',
+            'mobile' => ['required_without:email|max:13|min:11', new MobileRule],
             'email' => 'required_without:mobile|email'
         ];
     }
