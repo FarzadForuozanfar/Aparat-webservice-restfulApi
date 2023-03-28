@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email', 191)->unique()->nullable();
             $table->string('mobile', 13)->unique()->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->enum('type', User::TYPES)->default(User::USER_TYPE);
             $table->string('avatar', 100)->nullable();
             $table->string('website', 100)->nullable();

@@ -26,6 +26,11 @@ Route::group(['namespace' => 'App\Http\Controllers',], function($router){
         'as' => 'auth.register',
         'uses' => 'AuthController@register'
     ]);
+
+    $router->post('register-verify', [
+        'as' => 'auth.register-verify',
+        'uses' => 'AuthController@registerVerify'
+    ]);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

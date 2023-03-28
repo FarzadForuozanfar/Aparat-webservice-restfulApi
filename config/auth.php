@@ -120,6 +120,7 @@ return [
     'token_expiration' => [
         'token' => env('EXPIRATION_TOKEN', 30),
         'refresh_token' => env('EXPIRATION_TOKEN', 30)
-    ]
+    ],
+    'register_cache_expiration' => env('EXPIRATION_REGISTER', 1)
 
 ];
