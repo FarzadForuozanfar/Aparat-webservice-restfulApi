@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AuthregisterNewUserRequest extends FormRequest
 {
+    use GetRegisterFieldAndValueTrait;
     /**
      * Determine if the user is authorized to make this request.
      */

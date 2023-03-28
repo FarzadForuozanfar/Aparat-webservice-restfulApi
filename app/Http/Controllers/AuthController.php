@@ -15,8 +15,9 @@ class AuthController extends Controller
 {
     public function register(AuthregisterNewUserRequest $request)
     {
-        $field = $request->has('email') ? 'email' : 'mobile';
-        $value = $request->input($field);
+        $field = $request->getFieldName();
+        $value = $request->getFieldValue();
+
         // $key   = "user-auth-register-" . $value;
         // $expiration = config('auth.register_cache_expiration', 1);
         // Cache::put($key, compact('code', 'field'), now()->addDays($expiration));
