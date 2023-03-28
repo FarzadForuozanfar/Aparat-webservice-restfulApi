@@ -5,7 +5,7 @@ namespace App\Http\Requests\Auth;
 use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthregisterNewUserRequest extends FormRequest
+class ResendVerificationCodeRequest extends FormRequest
 {
     use GetRegisterFieldAndValueTrait;
     /**

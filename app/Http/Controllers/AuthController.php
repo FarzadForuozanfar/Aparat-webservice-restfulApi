@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Exceptions\RegisterVerificationException;
 use App\Exceptions\UserAlreadyRegisteredExcemption;
 use Illuminate\Http\Request;
-use App\Http\Requests\Auth\AuthregisterNewUserRequest;
+use App\Http\Requests\Auth\RegisterNewUserRequest;
 use App\Http\Requests\Auth\RegisterVerifyUserRequest ;
+use App\Http\Requests\Auth\ResendVerificationCodeRequest ;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
-    public function register(AuthregisterNewUserRequest $request)
+    public function register(RegisterNewUserRequest $request)
     {
         $field = $request->getFieldName();
         $value = $request->getFieldValue();
@@ -31,8 +31,8 @@ class AuthController extends Controller
             }
             return response(['message' => 'کد فعالسازی برای شما قبلا ارسال شده است'], 200);
         }
-        $code  = rand(100000,900000);
-        $user = User::create([
+        $code  = createVerifyCode();
+        $user  = User::create([
             $field => $value,
             'verified_code' => $code
         ]);
@@ -62,5 +62,26 @@ class AuthController extends Controller
         // }
 
         throw new RegisterVerificationException('کد تاییدیه وارد شده اشتباه می باشد');
+    }
+
+    public function resendVerificationCode(ResendVerificationCodeRequest $request)
+    {
+        $field   = $request->getFieldName();
+        $value   = $request->getFieldValue();
+        $user    = User::where([$field => $value, 'verified_at' => null])->first();
+        $diffMin = now()->diffInMinutes($user->updated_at);
+
+        if (!empty($user))
+        {
+            if ($diffMin > config('auth.resend_verification_code_time', 60))
+            {
+                $user->verified_code = createVerifyCode();
+                $user->save();
+            }
+
+            return response(['message' => 'کد فعالسازی مجددا برای شما ارسال گردید'], 200);
+        }
+
+        throw new ModelNotFoundException('کاربری با این مشخصات یافت نشد');
     }
 }

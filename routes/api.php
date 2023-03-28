@@ -31,6 +31,11 @@ Route::group(['namespace' => 'App\Http\Controllers',], function($router){
         'as' => 'auth.register-verify',
         'uses' => 'AuthController@registerVerify'
     ]);
+
+    $router->post('resend-verification-code', [
+        'as' => 'auth.resend-verification-code',
+        'uses' => 'AuthController@resendVerificationCode'
+    ]);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

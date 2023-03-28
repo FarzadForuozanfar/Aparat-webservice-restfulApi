@@ -116,11 +116,12 @@ return [
 
     'password_timeout' => 10800,
 
-    // Days
+    // Day
     'token_expiration' => [
         'token' => env('EXPIRATION_TOKEN', 30),
-        'refresh_token' => env('EXPIRATION_TOKEN', 30)
+        'refresh_token' => env('EXPIRATION_REFRESH_TOKEN', 30)
     ],
-    'register_cache_expiration' => env('EXPIRATION_REGISTER', 1)
+    'register_cache_expiration' => env('EXPIRATION_REGISTER', 1), // DAY
+    'resend_verification_code_time' => env('RESEND_VERIFICATION_CODETIME', 60) // minute
 
 ];
