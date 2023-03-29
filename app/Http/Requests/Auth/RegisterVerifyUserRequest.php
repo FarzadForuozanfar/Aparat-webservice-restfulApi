@@ -25,8 +25,8 @@ class RegisterVerifyUserRequest extends FormRequest
     {
         return [
             'code' => 'required|string',
-            'mobile' => ['required_without:email|max:13|min:11', new MobileRule],
-            'email' => 'required_without:mobile|email'
+            'email' => 'required_without:mobile|email',
+            'mobile' => ['required_without:email', new MobileRule]
         ];
     }
 }

@@ -24,7 +24,7 @@ class RegisterNewUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mobile' => ['required_without:email|max:13|min:11', new MobileRule],
+            'mobile' => ['required_without:email', new MobileRule],
             'email' => 'required_without:mobile|email'
         ];
     }
