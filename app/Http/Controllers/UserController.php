@@ -12,10 +12,7 @@ use JetBrains\PhpStorm\NoReturn;
 class UserController extends Controller
 {
     const CHANGE_EMAIL_CACHE_KEY = 'change.email';
-    /**
-     * @param ChangeEmailRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response
-     */
+
     public function  changeEmail(ChangeEmailRequest $request)
     {
         try
