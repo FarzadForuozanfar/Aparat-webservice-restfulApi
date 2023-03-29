@@ -8,7 +8,7 @@ if (!function_exists('toValidMobileNumber'))
      * @param string $mobile
      * @return string
      */
-    function toValidMobileNumber(string $mobile)
+    function toValidMobileNumber(string $mobile): string
     {
         return '+98' . substr($mobile, -10, 10);
 
@@ -22,7 +22,7 @@ if (!function_exists('createVerifyCode'))
      *
      * @return int
      */
-    function createVerifyCode()
+    function createVerifyCode(): int
     {
         return rand(100000,900000);
     }

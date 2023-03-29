@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,11 @@ Route::group(['namespace' => 'App\Http\Controllers',], function($router){
         'uses' => 'AuthController@resendVerificationCode'
     ]);
 });
+
+Route::post('change-email',
+    [UserController::class, 'changeEmail'])->middleware(['auth:api'])->name('change.email');
+Route::post('change-email-submit',
+    [UserController::class, 'changeEmailSubmit'])->middleware(['auth:api'])->name('change.email.submit');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
