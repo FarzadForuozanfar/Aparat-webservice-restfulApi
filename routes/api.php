@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,18 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
 
     $router->match(['post', 'put'],'/socials',
         [ChannelController::class, 'UpdateSocial'])->name('channel.update.socials');
+});
+
+/**
+ * Video Route API
+ */
+Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($router){
+    $router->post('/upload',
+        [VideoController::class, 'Upload'])->name('video.upload');
+
+    $router->post('/',
+        [VideoController::class, 'Create'])->name('video.create');
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
