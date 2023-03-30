@@ -26,10 +26,11 @@ Route::group([], function($router){
  * User Route API
  */
 Route::group(['middleware' => 'auth:api'], function($router){
-    $router->post('change-email',
-        [UserController::class, 'changeEmail'])->name('change.email');
-    $router->post('change-email-submit',
-        [UserController::class, 'changeEmailSubmit'])->name('change.email.submit');
+    $router->post('change-email', [UserController::class, 'changeEmail'])->name('change.email');
+
+    $router->post('change-email-submit', [UserController::class, 'changeEmailSubmit'])->name('change.email.submit');
+
+    $router->match(['post', 'put'],'change-password', [UserController::class, 'changePassword'])->name('password.change');
 });
 
 /**
@@ -38,8 +39,10 @@ Route::group(['middleware' => 'auth:api'], function($router){
 Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($router){
     $router->put('/{id?}',
         [ChannelController::class, 'Update'])->name('channel.update');
+
     $router->match(['post', 'put'],'/',
         [ChannelController::class, 'UploadAvatar'])->name('channel.upload.avatar');
+
     $router->match(['post', 'put'],'/socials',
         [ChannelController::class, 'UpdateSocial'])->name('channel.update.socials');
 });

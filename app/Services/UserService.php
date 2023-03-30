@@ -5,10 +5,12 @@ namespace App\Services;
 use App\Exceptions\RegisterVerificationException;
 use App\Exceptions\UserAlreadyRegisteredExcemption;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserService extends BaseService
@@ -145,5 +147,24 @@ class UserService extends BaseService
         return response([
             'message' => 'ایمیل با موفقیت تغییر یافت'
         ], 200);
+    }
+
+    public static function changePasswordUser(Request $request)
+    {
+        try
+        {
+            $user = auth()->user();
+            if (Hash::check($request->oldPassword, $user->password))
+            {
+                $user->update(['password' => bcrypt($request->newPassword)]);
+                return response(['message' => 'رمز عبور با موفقیت تغییر کرد'], 200);
+            }
+            return response(['message' => 'رمز عبور مطابقت ندارد'], 400);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception, $request->all());
+            return response(['message' => 'خطا رخ داده است ' . $exception->getMessage()], 500);
+        }
     }
 }
