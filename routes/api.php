@@ -1,48 +1,44 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChannelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-Route::group(['namespace' => 'Laravel\Passport\Http\Controllers',], function($router){
-    $router->post('login', [
-        'as' => 'auth.login',
-        'middleware' => 'throttle',
-        'uses' => 'AccessTokenController@issueToken'
-    ]);
+/**
+ * Auth Route API
+ */
+Route::group([], function($router){
+    $router->group(['namespace' => 'Laravel\Passport\Http\Controllers'], function($router){
+        $router->post('login', [
+            'as' => 'auth.login',
+            'middleware' => 'throttle',
+            'uses' => 'AccessTokenController@issueToken'
+        ]);
+    });
+    $router->post('register', [AuthController::class, 'register'])->name('auth.register');
+    $router->post('register-verify', [AuthController::class, 'registerVerify'])->name('auth.register-verify');
+    $router->post('resend-verification-code', [AuthController::class, 'resendVerificationCode'])->name('auth.resend-verification-code');
 });
 
-Route::group(['namespace' => 'App\Http\Controllers',], function($router){
-    $router->post('register', [
-        'as' => 'auth.register',
-        'uses' => 'AuthController@register'
-    ]);
-
-    $router->post('register-verify', [
-        'as' => 'auth.register-verify',
-        'uses' => 'AuthController@registerVerify'
-    ]);
-
-    $router->post('resend-verification-code', [
-        'as' => 'auth.resend-verification-code',
-        'uses' => 'AuthController@resendVerificationCode'
-    ]);
+/**
+ * User Route API
+ */
+Route::group(['middleware' => 'auth:api'], function($router){
+    $router->post('change-email',
+        [UserController::class, 'changeEmail'])->name('change.email');
+    $router->post('change-email-submit',
+        [UserController::class, 'changeEmailSubmit'])->name('change.email.submit');
 });
 
-Route::post('change-email',
-    [UserController::class, 'changeEmail'])->middleware(['auth:api'])->name('change.email');
-Route::post('change-email-submit',
-    [UserController::class, 'changeEmailSubmit'])->middleware(['auth:api'])->name('change.email.submit');
+/**
+ * Channel Route API
+ */
+Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($router){
+    $router->put('/{id?}',
+        [ChannelController::class, 'Update'])->name('channel.update');
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

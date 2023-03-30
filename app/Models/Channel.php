@@ -10,4 +10,9 @@ class Channel extends Model
     use HasFactory;
     protected $table    = "channels";
     protected $fillable = ['name', 'user_id', 'info', 'banner', 'socials'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
