@@ -63,7 +63,28 @@ class ChannelService extends BaseService
         }
         catch (Exception $exception)
         {
+            Log::error($exception);
             return response(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    public static function UpdateSocial(Request $request)
+    {
+        try
+        {
+            $socials = [
+                'facebook'=> $request->input('facebook'),
+                'telegram'=> $request->input('telegram'),
+                'instagram'=> $request->input('instagram'),
+                'twitter'=> $request->input('twitter')
+            ];
+            auth()->user()->channel->update(['socials' => json_encode($socials)]);
+            return response(['message' => 'با موفقیت ثبت شد'], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => 'خطایی رخ داده ' . $exception->getMessage()], 500);
         }
     }
 }

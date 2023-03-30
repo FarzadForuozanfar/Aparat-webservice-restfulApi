@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
         [ChannelController::class, 'Update'])->name('channel.update');
     $router->match(['post', 'put'],'/',
         [ChannelController::class, 'UploadAvatar'])->name('channel.upload.avatar');
+    $router->match(['post', 'put'],'/socials',
+        [ChannelController::class, 'UpdateSocial'])->name('channel.update.socials');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
