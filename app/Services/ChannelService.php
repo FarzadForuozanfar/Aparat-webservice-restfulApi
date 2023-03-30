@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ChannelService extends BaseService
 {
@@ -41,6 +42,28 @@ class ChannelService extends BaseService
             DB::rollBack();
             Log::error($exception);
             return response(['message' => 'خطایی رخ داده'], 500);
+        }
+    }
+
+    public static function uploadAvatar4Channel(Request $request)
+    {
+        try
+        {
+            $banner   = $request->file('banner');
+            $fileName = md5(auth()->id()) . '_' . Str::random();
+            $name     = $banner->move(public_path('channel-banners'), $fileName);
+            $channel  = auth()->user()->channel;
+            if ($channel->banner)
+            {
+                unlink(public_path($channel->banner));
+            }
+            $channel->banner = 'channel-banners/' . $fileName;
+            $channel->save();
+            return response(['banner-url' => url('channel-banners/' . $fileName)], 200);
+        }
+        catch (Exception $exception)
+        {
+            return response(['message' => $exception->getMessage()], 500);
         }
     }
 }

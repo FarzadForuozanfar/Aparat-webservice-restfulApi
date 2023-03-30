@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth:api'], function($router){
 Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($router){
     $router->put('/{id?}',
         [ChannelController::class, 'Update'])->name('channel.update');
+    $router->match(['post', 'put'],'/',
+        [ChannelController::class, 'UploadAvatar'])->name('channel.upload.avatar');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
