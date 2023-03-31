@@ -24,23 +24,23 @@ class CategoryIdRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $message = 'invaldi category id';
+        $message = 'invalid category id';
         if ($this->categoryType == self::PUBLIC_CATEGORIES)
         {
             if (!Category::where('id', $value)->whereNull('user_id')->count())
-                $fail($message);
+                $fail($message . '1');
         }
 
         elseif ($this->categoryType == self::PRIVATE_CATEGORIES)
         {
-            if (!Category::where('id', $value)->whereNotNull('user_id')->count())
-                $fail($message);
+            if (!Category::where('id', $value)->where('user_id', auth()->id())->count())
+                $fail($message . '2');
         }
 
         else
         {
             if (!Category::where('id', $value)->count())
-                $fail($message);
+                $fail($message . '3');
         }
     }
 }

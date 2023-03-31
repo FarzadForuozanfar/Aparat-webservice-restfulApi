@@ -35,7 +35,7 @@ class CreateVideoRequest extends FormRequest
             'playlist'=> 'nullable|exists:playlist,id',
             'channel_category'=> ['nullable', new CategoryIdRule(CategoryIdRule::PRIVATE_CATEGORIES)],
             'banner'=> ['nullable', new UploadedVideoBannerId() ],
-            'publish_at'=> 'nullable|date'
+            'publish_at'=> 'nullable|date_format:Y-m-d H:i:s|after:now'
         ];
     }
 }
