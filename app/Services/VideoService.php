@@ -34,4 +34,21 @@ class VideoService extends BaseService
         dd($request->validated());
     }
 
+    public static function uploadVideoBanner(Request $request)
+    {
+        try
+        {
+            $banner   = $request->file('banner');
+            $fileName = time() . Str::random(24) . '_banner';
+            $path     = public_path('videos/tmp');
+            $banner->move($path , $fileName);
+
+            return response(['banner' => $fileName], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => $exception->getMessage()], 500);
+        }
+    }
 }

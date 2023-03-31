@@ -16,7 +16,8 @@ class CategoriesTableSeeder extends Seeder
         if (Category::count())
             return;
 
-        $categories = ['گیم' => ['icon' => '', 'banner' => ''],
+        $categories = ['عمومی' => ['icon' => '', 'banner' => ''],
+            'گیم' => ['icon' => '', 'banner' => ''],
             'ورزشی' => ['icon' => '', 'banner' => ''],
             'کارتون' => ['icon' => '', 'banner' => ''],
             'طنز' => ['icon' => '', 'banner' => ''],

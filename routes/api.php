@@ -55,6 +55,9 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
     $router->post('/upload',
         [VideoController::class, 'Upload'])->name('video.upload');
 
+    $router->post('/upload-banner',
+        [VideoController::class, 'UploadBanner'])->name('video.upload.banner');
+
     $router->post('/',
         [VideoController::class, 'Create'])->name('video.create');
 
