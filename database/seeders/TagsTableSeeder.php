@@ -13,6 +13,9 @@ class TagsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        if (Tag::count())
+            Tag::truncate();
+
         $tags = ['گیم' ,
             'ورزشی' ,
             'کارتون' ,

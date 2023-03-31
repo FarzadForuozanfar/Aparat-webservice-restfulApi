@@ -14,7 +14,7 @@ class CategoriesTableSeeder extends Seeder
     public function run(): void
     {
         if (Category::count())
-            return;
+            Category::truncate();
 
         $categories = ['عمومی' => ['icon' => '', 'banner' => ''],
             'گیم' => ['icon' => '', 'banner' => ''],

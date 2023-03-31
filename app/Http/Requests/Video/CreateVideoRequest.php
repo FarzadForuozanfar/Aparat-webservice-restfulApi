@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Video;
 
+use App\Rules\CategoryIdRule;
 use App\Rules\UploadedVideoBannerId;
 use App\Rules\UploadedVideoId;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,12 +28,12 @@ class CreateVideoRequest extends FormRequest
         return [
             'video_id'=>['required', new UploadedVideoId()],
             'title'=> 'required|string|max:255',
-            'category'=> 'required|exists:categories,id',
+            'category'=> ['required', new CategoryIdRule(CategoryIdRule::PUBLIC_CATEGORIES)],
             'info'=> 'nullable|string',
             'tags'=> 'nullable|array',
             'tags.*'=>'exists:tags,id',
             'playlist'=> 'nullable|exists:playlist,id',
-            'channel_category'=> 'nullable|string',
+            'channel_category'=> ['nullable', new CategoryIdRule(CategoryIdRule::PRIVATE_CATEGORIES)],
             'banner'=> ['nullable', new UploadedVideoBannerId() ],
             'publish_at'=> 'nullable|date'
         ];

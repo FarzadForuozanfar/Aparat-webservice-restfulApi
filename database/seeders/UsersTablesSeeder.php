@@ -14,7 +14,8 @@ class UsersTablesSeeder extends Seeder
     public function run(): void
     {
         if (User::count())
-            return;
+            User::truncate();
+
         $this->createAdminUser();
         $this->createUser();
     }
@@ -23,7 +24,10 @@ class UsersTablesSeeder extends Seeder
     {
         $user = User::factory(1)->create([
             'type' => User::ADMIN_TYPE,
-            'name' => 'Farzad'
+            'name' => 'Farzad',
+            'email' => 'admin@aparat.me',
+            'mobile' => '+989152363485',
+            'password' => bcrypt('123456')
         ]);
         $this->command->info('created defualt admin user');
     }
@@ -32,7 +36,10 @@ class UsersTablesSeeder extends Seeder
     {
         $user = User::factory(1)->create([
             'type' => User::USER_TYPE,
-            'name' => 'Farzad User'
+            'name' => 'Farzad User',
+            'email' => 'user@aparat.me',
+            'mobile' => '+989212167732',
+            'password' => bcrypt('123456')
         ]);
         $this->command->info('created defualt user');
     }

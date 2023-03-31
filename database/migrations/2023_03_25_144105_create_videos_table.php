@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('channel_category_id');
             $table->string('slug', 50);
             $table->string('title');
             $table->text('info')->nullable();
@@ -33,6 +34,11 @@ return new class extends Migration
                     ->references('id')->on('categories')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
+
+            $table->foreign('channel_category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
