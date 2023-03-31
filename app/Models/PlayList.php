@@ -11,4 +11,9 @@ class PlayList extends Model
 
     protected $table   = 'playlist';
     protected $guarded = [];
+
+    public function videos()
+    {
+        return $this->belongsToMany(Video::class, 'playlists_videos');
+    }
 }

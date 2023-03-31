@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChannelController;
@@ -61,6 +62,24 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
     $router->post('/',
         [VideoController::class, 'Create'])->name('video.create');
 
+});
+
+/**
+ * Category Route API
+ */
+Route::group(['middleware' => 'auth:api', 'prefix' => '/category'], function($router){
+
+    $router->post('/',
+        [CategoryController::class, 'Create'])->name('category.create');
+
+    $router->post('/upload-banner',
+        [CategoryController::class, 'UploadBanner'])->name('category.upload.banner');
+
+    $router->get('/',
+        [CategoryController::class, 'Index'])->name('category.all');
+
+    $router->get('/my',
+        [CategoryController::class, 'My'])->name('category.my');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

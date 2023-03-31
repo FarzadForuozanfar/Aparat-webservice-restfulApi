@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Video;
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadVideoBannerRequest extends FormRequest
-
+class CategoryListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +22,7 @@ class UploadVideoBannerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'banner'=>'required|image|max:20480'
+            //
         ];
     }
 }

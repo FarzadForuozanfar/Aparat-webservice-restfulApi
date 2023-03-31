@@ -23,7 +23,7 @@ class UploadVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video'=>'required|mimes:mp4|max:2048'
+            'video'=>'required|file|mimetypes:video/*|max:204800'
         ];
     }
 }

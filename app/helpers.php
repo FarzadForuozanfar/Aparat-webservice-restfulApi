@@ -1,5 +1,8 @@
 
 <?php
+
+use Hashids\Hashids;
+
 if (!function_exists('toValidMobileNumber'))
 {
     /**
@@ -25,6 +28,13 @@ if (!function_exists('createVerifyCode'))
     function createVerifyCode(): int
     {
         return rand(100000,900000);
+    }
+}
+if (!function_exists('uniqueId')) {
+    function uniqueId(int $value): string
+    {
+        $hash = new Hashids(env('APP_KEY'), 10);
+        return $hash->encode($value);
     }
 }
 

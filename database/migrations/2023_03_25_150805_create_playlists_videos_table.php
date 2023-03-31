@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('playlists_videos', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
-            $table->unsignedBigInteger('playlist_id');
+            $table->unsignedBigInteger('play_list_id');
             $table->unsignedBigInteger('video_id');
 
             $table->timestamps();
