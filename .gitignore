@@ -9,7 +9,8 @@
 /storage/logs/
 /storage/*.key
 /vendor
-.log
+storage/*.log
+/storage/logs/*.log
 .env
 .env.backup
 .env.production
