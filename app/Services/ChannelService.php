@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ChannelService extends BaseService
@@ -50,16 +51,17 @@ class ChannelService extends BaseService
         try
         {
             $banner   = $request->file('banner');
-            $fileName = md5(auth()->id()) . '_' . Str::random();
-            $name     = $banner->move(public_path('channel-banners'), $fileName);
+            $fileName = time() . md5(auth()->id()) . '_' . Str::random();
+            Storage::disk('channel')->put($fileName, $banner->get());
+
             $channel  = auth()->user()->channel;
             if ($channel->banner)
             {
-                unlink(public_path($channel->banner));
+                Storage::disk('channel')->delete($channel->banner);
             }
-            $channel->banner = 'channel-banners/' . $fileName;
+            $channel->banner = Storage::disk('channel')->path($fileName);
             $channel->save();
-            return response(['banner-url' => url('channel-banners/' . $fileName)], 200);
+            return response(['banner-url' => Storage::disk('channel')->url($fileName)], 200);
         }
         catch (Exception $exception)
         {

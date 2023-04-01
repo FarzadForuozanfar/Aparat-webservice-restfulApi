@@ -37,4 +37,18 @@ if (!function_exists('uniqueId')) {
         return $hash->encode($value);
     }
 }
-
+if (!function_exists('clear_storage')) {
+    function clear_storage(string $storageName)
+    {
+        try {
+            Storage::disk($storageName)->delete(Storage::disk($storageName)->allFiles());
+            foreach (Storage::disk($storageName)->allDirectories() as $dir) {
+                Storage::disk($storageName)->deleteDirectory($dir);
+            }
+            return true;
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return false;
+        }
+    }
+}

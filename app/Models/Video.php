@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use HasFactory;
+    const PENDING = 'pending'; // پردازش در صف
+    const CONVERT = 'convert'; // تبدیل انجام شده
+    const ACCEPT  = 'accept'; // پذیرفته شده و انشار یافته
+    const BLOCKED = 'blocked'; // محتوا ویدیو مناسب نبود
+    const STATES  = [self::PENDING, self::CONVERT, self::ACCEPT, self::BLOCKED];
     protected $guarded = [];
 
     public function playlist()

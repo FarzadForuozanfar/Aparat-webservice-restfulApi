@@ -45,6 +45,7 @@ class PassportClientSeeder extends Seeder
             'user_id' => null,
             'name' => 'Laravel Password Access Client',
             'redirect' => env('APP_URL'),
+            'provider' => 'users',
             'secret' => '5Ek0PkvZb52jkQRZfmZZCA7lqQVS0JMhV0lgBsNJ',
             'personal_access_client' => 0,
             'password_client' => 1,

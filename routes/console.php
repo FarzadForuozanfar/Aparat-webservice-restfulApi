@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Artisan::command('aparat:clear', function () {
+    clear_storage('video');
+    $this->info('CLear uploaded video files');
+
+    clear_storage('category');
+    $this->info('CLear uploaded category files');
+
+    clear_storage('channel');
+    $this->info('CLear uploaded channel files');
+
+})->describe('Clear all temporary files,...');

@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
  * Video Route API
  */
 Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($router){
+    \Illuminate\Support\Facades\Log::info('45');
     $router->post('/upload',
         [VideoController::class, 'Upload'])->name('video.upload');
 
