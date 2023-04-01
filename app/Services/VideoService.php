@@ -6,6 +6,8 @@ use App\Models\PlayList;
 use App\Models\User;
 use App\Models\Video;
 use Exception;
+use FFMpeg\Filters\Video\CustomFilter;
+use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,7 +41,14 @@ class VideoService extends BaseService
         try
         {
             /** @var Media $videoFile */
-            $videoFile = FFMpeg::fromDisk('video')->open('/tmp/' . $request->video_id);
+            $tmpPath       = '/tmp/' . $request->video_id;
+            $channelName   = auth()->user()->channel->name;
+            $videoFile     = FFMpeg::fromDisk('video')->open($tmpPath);
+            $filter        = new CustomFilter("drawtext=text='aparat.me/{$channelName}': fontcolor=blue: fontsize=24:
+            box=1: boxcolor=white@0.4: boxborderw=5:
+            x=10: y=(h - text_h - 10)");
+            $format    = new \FFMpeg\Format\Video\X264('libmp3lame');
+            $videoFile = $videoFile->addFilter($filter)->export()->toDisk('video')->inFormat($format);
             DB::beginTransaction();
             $video = Video::create([
                 'title' => $request->title,
@@ -58,7 +67,8 @@ class VideoService extends BaseService
             $video->banner = $video->slug . '_banner';
             $video->save();
 
-            Storage::disk('video')->move('/tmp/' . $request->video_id, auth()->id() . '/' . $video->slug);
+            $videoFile->save(auth()->id() . '/' . $video->slug . '.mp4');
+            Storage::disk('video')->delete($tmpPath);
             if ($request->banner)
             {
                 Storage::disk('video')->move('/tmp/' . $request->banner, auth()->id() . '/' . $video->banner);
@@ -80,6 +90,7 @@ class VideoService extends BaseService
         }
         catch (Exception $exception)
         {
+            //TODO delete banner & video if exist in directory
             Log::error($request.$exception);
             DB::rollBack();
             return response(['message' => 'خطا رخ داده است'], 500);
