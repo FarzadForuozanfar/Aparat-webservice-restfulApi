@@ -6,6 +6,7 @@
 /public/channel-banners
 /public/videos
 /public/categories
+/storage/logs
 /storage/*.key
 /vendor
 .env

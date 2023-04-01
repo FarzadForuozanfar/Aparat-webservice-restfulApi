@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChannelController;
@@ -80,6 +81,21 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/category'], function($ro
 
     $router->get('/my',
         [CategoryController::class, 'My'])->name('category.my');
+});
+
+/**playlist
+ * Playlist Route API
+ */
+Route::group(['middleware' => 'auth:api', 'prefix' => '/playlist'], function($router){
+
+    $router->post('/',
+        [PlaylistController::class, 'Create'])->name('playlist.create');
+
+    $router->get('/',
+        [PlaylistController::class, 'Index'])->name('playlist.all');
+
+    $router->get('/my',
+        [PlaylistController::class, 'My'])->name('playlist.my');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
