@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('video_id');
 
             $table->timestamps();
-            $table->foreign('playlist_id')
+            $table->foreign('play_list_id')
             ->references('id')->on('playlist')
             ->onDelete('cascade')
             ->onUpdate('cascade');

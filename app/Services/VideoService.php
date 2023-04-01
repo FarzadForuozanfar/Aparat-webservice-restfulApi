@@ -49,6 +49,7 @@ class VideoService extends BaseService
                 'info' => $request->info,
                 'duration' => (int)$videoFile->getDurationInSeconds(),
                 'banner' => '',
+                'enable_comments' => $request->enable_comments,
                 'publish_at' => $request->publish_at,
                 'channel_category_id' => $request->channel_category
             ]);
