@@ -6,9 +6,10 @@
 /public/channel-banners
 /public/videos
 /public/categories
-/storage/logs
+/storage/logs/
 /storage/*.key
 /vendor
+.log
 .env
 .env.backup
 .env.production
