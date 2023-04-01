@@ -1,3 +1,4 @@
+/storage/logs/*.log
 /.phpunit.cache
 /node_modules
 /public/build
@@ -9,8 +10,6 @@
 /storage/logs/
 /storage/*.key
 /vendor
-storage/*.log
-/storage/logs/*.log
 .env
 .env.backup
 .env.production
