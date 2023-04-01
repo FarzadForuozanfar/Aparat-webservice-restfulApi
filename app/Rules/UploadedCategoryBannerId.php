@@ -17,9 +17,9 @@ class UploadedCategoryBannerId implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!Storage::disk('category')->exists('tmp/' . $value));
+        if (!Storage::disk('category')->exists('tmp/' . $value))
         {
-            $fail('Invalid Category Banner id');
+            $fail('banner Id', 'invalid banner id');
         }
     }
 }

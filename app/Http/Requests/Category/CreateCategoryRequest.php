@@ -12,20 +12,20 @@ class CreateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'title'=>'required|string|min:3|max|100',
-            'icon'=>'nullable|string',
-            'banner_id'=>['nullable', new UploadedCategoryBannerId]
+            'title'=>'required|string|min:3|max:100,unique:categories,title',
+            'icon'=>'required|string',
+            'banner'=>['nullable', new UploadedCategoryBannerId()]
         ];
     }
 }
