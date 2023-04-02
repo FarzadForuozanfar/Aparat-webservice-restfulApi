@@ -8,6 +8,7 @@
 /public/videos
 /public/categories
 /storage/logs/
+/storage/framework/
 /storage/*.key
 /vendor
 .env
