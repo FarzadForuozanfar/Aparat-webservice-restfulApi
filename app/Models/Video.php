@@ -24,4 +24,9 @@ class Video extends Model
     {
         return $this->belongsToMany(Tag::class, 'video_tags');
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

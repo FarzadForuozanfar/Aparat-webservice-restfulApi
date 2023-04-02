@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Video\ChangeStateRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
 use App\Http\Requests\Video\UploadVideoRequest;
@@ -22,5 +23,11 @@ class VideoController extends Controller
     public function UploadBanner(UploadVideoBannerRequest $request)
     {
         return VideoService::uploadVideoBanner($request);
+    }
+
+    public function ChangeState(ChangeStateRequest $request)
+    {
+
+        return VideoService::changeState($request);
     }
 }

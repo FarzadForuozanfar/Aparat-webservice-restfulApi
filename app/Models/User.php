@@ -75,4 +75,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlayList::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->type === self::ADMIN_TYPE;
+    }
+
+    public function isBaseUser(): bool
+    {
+        return $this->type === self::USER_TYPE;
+    }
 }

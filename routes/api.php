@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
     $router->post('/',
         [VideoController::class, 'Create'])->name('video.create');
 
+    $router->put('/{video}/state',
+        [VideoController::class, 'ChangeState'])->name('video.change.state');
 });
 
 /**

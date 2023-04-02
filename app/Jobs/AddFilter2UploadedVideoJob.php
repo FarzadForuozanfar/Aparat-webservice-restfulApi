@@ -42,7 +42,6 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $video = $this->video;
             /** @var Media $videoFile */
             $tmpPath       = '/tmp/' . $this->video_id;
             $channelName   = $this->user->channel->name;
@@ -52,11 +51,11 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
             x=10: y=(h - text_h - 10)");
             $format      = new \FFMpeg\Format\Video\X264('libmp3lame');
             $videoFilter = $videoFile->addFilter($filter)->export()->toDisk('video')->inFormat($format);
-            $videoFilter->save($this->user->id . '/' . $video->slug . '.mp4');
+            $videoFilter->save($this->user->id . '/' . $this->video->slug . '.mp4');
             Storage::disk('video')->delete($tmpPath);
-            $video->duration = $videoFile->getDurationInSeconds();
+            $this->video->duration = $videoFile->getDurationInSeconds();
             $this->video->state = Video::CONVERTED;
-            $video->save();
+            $this->video->save();
         }
         catch (\Exception $exception)
         {

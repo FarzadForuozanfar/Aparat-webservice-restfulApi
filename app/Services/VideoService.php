@@ -6,6 +6,7 @@ use App\Events\UploadNewVideo;
 use App\Models\PlayList;
 use App\Models\Video;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -101,5 +102,13 @@ class VideoService extends BaseService
             Log::error($exception);
             return response(['message' => $exception->getMessage()], 500);
         }
+    }
+
+    public static function changeState(Request $request)
+    {
+        $video        = $request->video;
+        $video->state = $request->state;
+        $video->save();
+        return response($video, 200);
     }
 }
