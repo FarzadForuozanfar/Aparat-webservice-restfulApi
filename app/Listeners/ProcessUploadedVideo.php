@@ -20,6 +20,6 @@ class ProcessUploadedVideo
      */
     public function handle(UploadNewVideo $event): void
     {
-        AddFilter2UploadedVideoJob::dispatch($event->getVideo(), $event->getRequest()->video_id);
+        AddFilter2UploadedVideoJob::dispatch($event->getVideo(), $event->getRequest()->video_id, $event->getRequest()->enable_watermark);
     }
 }
