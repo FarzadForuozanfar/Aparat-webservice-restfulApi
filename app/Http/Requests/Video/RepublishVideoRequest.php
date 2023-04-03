@@ -2,11 +2,8 @@
 
 namespace App\Http\Requests\Video;
 
-use App\Rules\CategoryIdRule;
-use App\Rules\OwnPlaylistRule;
-use App\Rules\UploadedVideoBannerId;
-use App\Rules\UploadedVideoId;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RepublishVideoRequest extends FormRequest
 
@@ -16,7 +13,7 @@ class RepublishVideoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('republish', $this->video);
     }
 
     /**
