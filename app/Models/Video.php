@@ -15,6 +15,7 @@ class Video extends Model
     const STATES    = [self::PENDING, self::CONVERTED, self::ACCEPT, self::BLOCKED];
     protected $guarded = [];
 
+    //region relations
     public function playlist()
     {
         return $this->belongsToMany(PlayList::class, 'playlists_videos')->first();
@@ -24,6 +25,12 @@ class Video extends Model
     {
         return $this->belongsToMany(Tag::class, 'video_tags');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    //endregion relations
 
     public function getRouteKeyName(): string
     {

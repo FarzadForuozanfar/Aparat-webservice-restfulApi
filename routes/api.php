@@ -55,18 +55,17 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
  * Video Route API
  */
 Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($router){
-    \Illuminate\Support\Facades\Log::info('45');
-    $router->post('/upload',
-        [VideoController::class, 'Upload'])->name('video.upload');
+    $router->post('/upload', [VideoController::class, 'Upload'])->name('video.upload');
 
-    $router->post('/upload-banner',
-        [VideoController::class, 'UploadBanner'])->name('video.upload.banner');
+    $router->post('/upload-banner', [VideoController::class, 'UploadBanner'])->name('video.upload.banner');
 
-    $router->post('/',
-        [VideoController::class, 'Create'])->name('video.create');
+    $router->post('/', [VideoController::class, 'Create'])->name('video.create');
 
-    $router->put('/{video}/state',
-        [VideoController::class, 'ChangeState'])->name('video.change.state');
+    $router->put('/{video}/state', [VideoController::class, 'ChangeState'])->name('video.change.state');
+
+    $router->get('/', [VideoController::class, 'Index'])->name('video.list');
+
+    $router->post('/{video}/republish', [VideoController::class, 'Republish'])->name('video.republish');
 });
 
 /**

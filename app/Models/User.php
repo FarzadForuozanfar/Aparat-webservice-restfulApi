@@ -61,6 +61,7 @@ class User extends Authenticatable
         $this->attributes['mobile'] = toValidMobileNumber($value);
     }
 
+    //region relations
     public function channel()
     {
         return $this->hasOne(Channel::class);
@@ -75,6 +76,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlayList::class);
     }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    public function republishedVideos()
+    {
+        return $this->hasManyThrough(Video::class,
+                                    RepublishVideo::class,
+                                    'user_id', //video_republishes.user_id
+                                    'id', // video.id
+                                    'id',  // user.id
+                                    'video_id'); //video_republishes.video_id
+    }
+    //endregion relations
 
     public function isAdmin(): bool
     {

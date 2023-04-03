@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\UploadNewVideo;
 use App\Models\PlayList;
+use App\Models\RepublishVideo;
 use App\Models\Video;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -110,5 +111,29 @@ class VideoService extends BaseService
         $video->state = $request->state;
         $video->save();
         return response($video, 200);
+    }
+
+    public static function list(Request $request)
+    {
+        $user   = auth()->user();
+        $videos = $user->videos()->paginate();
+        return $videos;
+    }
+
+    public static function republish(Request $request)
+    {
+        try {
+            $user           = auth()->user();
+            $videoRepublish = RepublishVideo::create([
+                'user_id' => $user->id,
+                'video_id' => $request->video->id
+            ]);
+            return response(['message' => 'ویدیو با موفقیت بازنشر شد', 'data' => $videoRepublish->created_at], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
     }
 }
