@@ -7,7 +7,6 @@ use App\Models\PlayList;
 use App\Models\RepublishVideo;
 use App\Models\Video;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -116,7 +115,7 @@ class VideoService extends BaseService
     public static function list(Request $request)
     {
         $user   = auth()->user();
-        $videos = $user->videos()->paginate();
+        $videos = $user->videos()->paginate(); //TODO define size of paginate 4 video in config
         return $videos;
     }
 
