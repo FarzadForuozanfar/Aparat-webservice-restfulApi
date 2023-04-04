@@ -114,9 +114,18 @@ class VideoService extends BaseService
 
     public static function list(Request $request)
     {
-        $user   = auth()->user();
-        $videos = $user->videos()->paginate(); //TODO define size of paginate 4 video in config
-        return $videos;
+        $user = auth()->user();
+        if ($request->has('republished'))
+        {
+            $republished = (bool)$request->republished;
+            $videos      = $republished ? $user->republishedVideos() : $user->channelVideos();
+        }
+        else
+        {
+            $videos = $user->videos();
+        }
+
+        return $videos->paginate();//TODO define size of paginate for video in config
     }
 
     public static function republish(Request $request)
