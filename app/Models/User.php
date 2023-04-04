@@ -96,8 +96,19 @@ class User extends Authenticatable
     {
         return $this->channelVideos()->union($this->republishedVideos());
     }
+
+    public function favouriteVideos()
+    {
+        return $this->hasManyThrough(Video::class,
+        VideoFavourite::class,
+        'user_id', //video_republishes.user_id
+        'id', // video.id
+        'id',  // user.id
+        'video_id');
+    }
     //endregion relations
 
+    //region custom method
     public function isAdmin(): bool
     {
         return $this->type === self::ADMIN_TYPE;
@@ -107,4 +118,5 @@ class User extends Authenticatable
     {
         return $this->type === self::USER_TYPE;
     }
+    //endregion custom method
 }

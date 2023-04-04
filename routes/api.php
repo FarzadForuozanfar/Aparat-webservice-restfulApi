@@ -66,6 +66,9 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
     $router->get('/', [VideoController::class, 'Index'])->name('video.list');
 
     $router->post('/{video}/republish', [VideoController::class, 'Republish'])->name('video.republish');
+
+    $router->post('/{video}/like', [VideoController::class, 'Like'])->name('video.like-unlike')->withoutMiddleware(['auth:api']);
+
 });
 
 /**

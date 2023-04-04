@@ -6,6 +6,7 @@ use App\Events\UploadNewVideo;
 use App\Models\PlayList;
 use App\Models\RepublishVideo;
 use App\Models\Video;
+use App\Models\VideoFavourite;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -125,7 +126,7 @@ class VideoService extends BaseService
             $videos = $user->videos();
         }
 
-        return $videos->paginate();//TODO define size of paginate for video in config
+        return $videos->orderByDesc('updated_at')->paginate();//TODO define size of paginate for video in config
     }
 
     public static function republish(Request $request)
@@ -142,6 +143,45 @@ class VideoService extends BaseService
         {
             Log::error($exception);
             return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
+    }
+
+    public static function likeUnlikeVideo(Request $request)
+    {
+        $user   = auth('api')->user();
+        $video  = $request->video;
+        $like   = $request->like;
+
+        $favourite = $user?->favouriteVideos()->where(['video_id' => $video->id])->first();
+        if (empty($favourite))
+        {
+            $client_ip = clientIP();
+            if ($like)
+            {
+                if (!$user and VideoFavourite::where(['user_ip'=> $client_ip, 'user_id' => null])->count())
+                    return response(['message' => 'شما قبلا این ویدیو را لاک کرده اید'], 200);
+                VideoFavourite::create(['user_id' => $user?->id,
+                                        'video_id'=> $video->id,
+                                        'user_ip' => $client_ip]
+                );
+                return response(['message' => 'ویدیو با موفقیت لایک شد'],200);
+            }
+            else
+            {
+                return response(['message' => 'عملیات غیر قابل قبول است'], 400);
+            }
+        }
+        else
+        {
+            if (!$like) //TODO add dislike by client ip
+            {
+                VideoFavourite::where(['user_id' => $user?->id, 'video_id' => $video->id])->delete();
+                return response(['message' => 'ویدیو با موفقیت دیس لایک شد'],200);
+            }
+            else
+            {
+                return response(['message' => 'شما قبلا این ویدیو را لایک کردید'], 400);
+            }
         }
     }
 }

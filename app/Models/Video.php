@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\Pure;
 
 class Video extends Model
 {
@@ -36,4 +37,32 @@ class Video extends Model
     {
         return 'slug';
     }
+
+    //region custom method
+
+    /**
+     * @param $state
+     * @return bool
+     */
+    public function isInState($state): bool
+    {
+        return $this->state == $state;
+    }
+    #[Pure] public function isAccepted(): bool
+    {
+        return $this->isInState(self::ACCEPT);
+    }
+    #[Pure] public function isPending(): bool
+    {
+        return $this->isInState(self::PENDING);
+    }
+    #[Pure] public function isConverted(): bool
+    {
+        return $this->isInState(self::CONVERTED);
+    }
+    #[Pure] public function isBlocked(): bool
+    {
+        return $this->isInState(self::BLOCKED);
+    }
+    //endregion custom method
 }

@@ -5,10 +5,16 @@ namespace App\Policies;
 use App\Models\RepublishVideo;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoFavourite;
 
 class VideoPolicy
 {
 
+    /**
+     * @param User $user
+     * @param Video|null $video
+     * @return bool
+     */
     public function changeState(User $user, Video $video = null)
     {
         return $user->isAdmin();
@@ -16,7 +22,7 @@ class VideoPolicy
 
     public function republish(User $user, Video $video = null): bool
     {
-        return $video &&
+        return $video && $video->isAccepted() and
             (
                 // در صورتی که این ویدیو مال خودم نباشد
                 $video->user_id != $user->id &&
@@ -27,4 +33,15 @@ class VideoPolicy
                 ])->count() < 1
             );
     }
+
+    /**
+     * @param User|null $user
+     * @param Video|null $video
+     * @return bool
+     */
+    public function like(User $user = null, Video $video = null): bool
+    {
+        return $video and $video->isAccepted();
+    }
+
 }

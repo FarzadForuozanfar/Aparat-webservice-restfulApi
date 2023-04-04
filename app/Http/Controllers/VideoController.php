@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Video\ChangeStateRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
+use App\Http\Requests\Video\LikeVideoRequest;
 use App\Http\Requests\Video\ListVideoRequest;
 use App\Http\Requests\Video\RepublishVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
@@ -41,4 +42,8 @@ class VideoController extends Controller
         return VideoService::republish($request);
     }
 
+    public function Like(LikeVideoRequest $request)
+    {
+        return VideoService::likeUnlikeVideo($request);
+    }
 }
