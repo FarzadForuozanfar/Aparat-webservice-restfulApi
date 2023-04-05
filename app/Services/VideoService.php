@@ -201,6 +201,8 @@ class VideoService extends BaseService
 
     public static function likedByCurrentUser(Request $request)
     {
-
+        $user   = $request->user();
+        $videos = $user->favouriteVideos()->paginate();
+        return $videos;
     }
 }

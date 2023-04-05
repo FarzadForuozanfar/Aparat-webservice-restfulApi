@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->post('/{video}/like', [VideoController::class, 'Like'])->name('video.like-unlike')->withoutMiddleware(['auth:api']);
 
-    $router->post('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked');
+    $router->get('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked');
 });
 
 /**

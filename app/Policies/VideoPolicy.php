@@ -43,4 +43,14 @@ class VideoPolicy
         return $video and $video->isAccepted();
     }
 
+    /**
+     * @param User|null $user
+     * @param Video|null $video
+     * @return bool
+     */
+    public function OwnLikedList(User $user, Video $video = null): bool
+    {
+        return isset($user);
+    }
+
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Requests\Video\LikedVideoRequest;
+use App\Http\Requests\Video\LikedVideoRequest;
 use App\Http\Requests\Video\ChangeStateRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\LikeVideoRequest;
