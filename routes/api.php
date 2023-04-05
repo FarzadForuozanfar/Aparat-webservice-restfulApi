@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->post('/{video}/like', [VideoController::class, 'Like'])->name('video.like-unlike')->withoutMiddleware(['auth:api']);
 
+    $router->post('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked');
 });
 
 /**

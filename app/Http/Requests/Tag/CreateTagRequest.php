@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Tag;
 
-use App\Rules\Unique4User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTagRequest extends FormRequest

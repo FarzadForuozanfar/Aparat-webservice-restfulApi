@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Channel;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

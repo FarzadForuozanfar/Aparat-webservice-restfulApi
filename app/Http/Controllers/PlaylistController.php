@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Playlist\AllPlaylistRequest;
 use App\Http\Requests\Playlist\CreatePlaylistRequest;
 use App\Services\PlaylistService;
-use Illuminate\Http\Request;
 
 class PlaylistController extends Controller
 {

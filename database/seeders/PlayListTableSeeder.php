@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\PlayList;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PlayListTableSeeder extends Seeder

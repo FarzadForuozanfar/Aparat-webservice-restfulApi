@@ -198,4 +198,9 @@ class VideoService extends BaseService
             }
         }
     }
+
+    public static function likedByCurrentUser(Request $request)
+    {
+
+    }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Video;
 
-use App\Models\Video;
 use App\Rules\ChangeStateVideoRule;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 

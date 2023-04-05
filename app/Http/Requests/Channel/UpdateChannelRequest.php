@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Channel;
 
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateChannelRequest extends FormRequest

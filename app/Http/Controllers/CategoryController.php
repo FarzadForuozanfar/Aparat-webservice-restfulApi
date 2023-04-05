@@ -6,7 +6,6 @@ use App\Http\Requests\Category\CategoryListRequest;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UploadCategoryBannerRequest;
 use App\Services\CategoryService;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
