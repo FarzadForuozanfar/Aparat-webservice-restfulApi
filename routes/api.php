@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->put('/{video}/state', [VideoController::class, 'ChangeState'])->name('video.change.state');
 
-    $router->get('/', [VideoController::class, 'Index'])->name('video.list');
+    $router->get('/', [VideoController::class, 'Index'])->name('video.list')->withoutMiddleware(['auth:api']);
 
     $router->post('/{video}/republish', [VideoController::class, 'Republish'])->name('video.republish');
 

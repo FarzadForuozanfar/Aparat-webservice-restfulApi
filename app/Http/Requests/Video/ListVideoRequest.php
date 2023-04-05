@@ -2,10 +2,6 @@
 
 namespace App\Http\Requests\Video;
 
-use App\Rules\CategoryIdRule;
-use App\Rules\OwnPlaylistRule;
-use App\Rules\UploadedVideoBannerId;
-use App\Rules\UploadedVideoId;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ListVideoRequest extends FormRequest

@@ -33,10 +33,25 @@ class Video extends Model
     }
     //endregion relations
 
+    //region override method
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
+
+    public function toArray()
+    {
+        $data          = parent::toArray();
+        $conditions    = ['user_id' => null, 'video_id' => $this->id];
+        if (!auth('api')->check())
+        {
+            $conditions['user_ip'] = clientIP();
+            $conditions['user_id'] = auth('api')->id();
+        }
+        $data['liked'] = VideoFavourite::where($conditions)->count();
+        return $data;
+    }
+    //endregion override method
 
     //region custom method
 
@@ -65,4 +80,16 @@ class Video extends Model
         return $this->isInState(self::BLOCKED);
     }
     //endregion custom method
+
+    //region custom static methods
+    public static function whereRepublished()
+    {
+        return static::whereRaw('id IN (SELECT video_id FROM video_republishes)');
+    }
+
+    public static function whereNotRepublished()
+    {
+        return static::whereRaw('id NOT IN (SELECT video_id FROM video_republishes)');
+    }
+    //endregion
 }

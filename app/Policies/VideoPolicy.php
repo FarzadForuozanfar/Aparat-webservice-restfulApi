@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\RepublishVideo;
 use App\Models\User;
 use App\Models\Video;
-use App\Models\VideoFavourite;
 
 class VideoPolicy
 {

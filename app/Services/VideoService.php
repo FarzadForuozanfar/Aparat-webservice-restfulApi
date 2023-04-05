@@ -115,15 +115,21 @@ class VideoService extends BaseService
 
     public static function list(Request $request)
     {
-        $user = auth()->user();
+        $user = auth('api')->user();
         if ($request->has('republished'))
         {
-            $republished = (bool)$request->republished;
-            $videos      = $republished ? $user->republishedVideos() : $user->channelVideos();
+           if ($user)
+           {
+               $videos = (bool)$request->republished ? $user->republishedVideos() : $user->channelVideos();
+           }
+           else
+           {
+                $videos = (bool)$request->republished ? Video::whereRepublished() : Video::whereNotRepublished();
+           }
         }
         else
         {
-            $videos = $user->videos();
+            $videos = $user ? $user->videos() : Video::query()->union(RepublishVideo::query()); //TODO درصورت لاگین نبودن یوزر دومی اجرا می شود ولی تمام ویدیو ها را میده باید با بازنشر شده ها جوین بزنه
         }
 
         return $videos->orderByDesc('updated_at')->paginate();//TODO define size of paginate for video in config
@@ -158,29 +164,37 @@ class VideoService extends BaseService
             $client_ip = clientIP();
             if ($like)
             {
-                if (!$user and VideoFavourite::where(['user_ip'=> $client_ip, 'user_id' => null])->count())
-                    return response(['message' => 'شما قبلا این ویدیو را لاک کرده اید'], 200);
+                if (!$user and VideoFavourite::where(['user_ip'=> $client_ip, 'user_id' => null, 'video_id' => $video->id])->count())
+                    return response(['message' => 'شما قبلا این ویدیو را لایک کرده اید'], 200);
+
                 VideoFavourite::create(['user_id' => $user?->id,
                                         'video_id'=> $video->id,
-                                        'user_ip' => $client_ip]
+                                        'user_ip' => "$client_ip"]
                 );
                 return response(['message' => 'ویدیو با موفقیت لایک شد'],200);
             }
             else
             {
+                if (!$user and VideoFavourite::where([
+                                                        'user_ip'=> "$client_ip",
+                                                        'user_id' => null,
+                                                        'video_id' => $video->id
+                                                    ])->delete())
+                    return response(['message' => 'ویدیو با موفقیت دیس لایک شد'], 200);
+
                 return response(['message' => 'عملیات غیر قابل قبول است'], 400);
             }
         }
         else
         {
-            if (!$like) //TODO add dislike by client ip
+            if (!$like)
             {
                 VideoFavourite::where(['user_id' => $user?->id, 'video_id' => $video->id])->delete();
                 return response(['message' => 'ویدیو با موفقیت دیس لایک شد'],200);
             }
             else
             {
-                return response(['message' => 'شما قبلا این ویدیو را لایک کردید'], 400);
+                return response(['message' => 'شما قبلا این ویدیو را دیس لایک کردید'], 400);
             }
         }
     }
