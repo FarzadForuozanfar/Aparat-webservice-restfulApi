@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Channel;
 
 use App\Models\User;
+use App\Rules\channelNameRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateChannelRequest extends FormRequest
@@ -22,12 +23,12 @@ class UpdateChannelRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'name'=>'required|string',
+            'name'=>['required','string:255|','unique:channels,name', new channelNameRule()],
             'website'=>'nullable|url|string',
             'info'=>'nullable|string'
         ];

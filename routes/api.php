@@ -49,6 +49,9 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
 
     $router->match(['post', 'put'],'/socials',
         [ChannelController::class, 'UpdateSocial'])->name('channel.update.socials');
+
+    $router->match(['post', 'get'],'/{channel}/follow',
+        [ChannelController::class, 'Follow'])->name('channel.follow');
 });
 
 /**

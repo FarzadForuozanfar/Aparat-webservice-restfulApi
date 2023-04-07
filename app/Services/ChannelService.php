@@ -88,4 +88,19 @@ class ChannelService extends BaseService
             return response(['message' => 'خطایی رخ داده ' . $exception->getMessage()], 500);
         }
     }
+
+    public static function followChannel(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $user->follow($request->channel->user);
+            return response(['message' => 'با موفقیت دنبال شد'], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
+    }
+
 }

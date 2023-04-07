@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
-            $table->string('name',256)->nullable();
+            $table->string('name',256)->nullable(); //TODO must be unique
             $table->unsignedBigInteger('user_id');
             $table->text('info')->nullable();
             $table->string('banner')->nullable();

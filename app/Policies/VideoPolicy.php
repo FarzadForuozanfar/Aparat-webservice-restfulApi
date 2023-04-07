@@ -44,7 +44,7 @@ class VideoPolicy
     }
 
     /**
-     * @param User|null $user
+     * @param User $user
      * @param Video|null $video
      * @return bool
      */

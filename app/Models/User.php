@@ -106,6 +106,30 @@ class User extends Authenticatable
         'id',  // user.id
         'video_id');
     }
+
+    public function followings()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserFollowing::class,
+            'user_id1',
+            'id',
+            'id',
+            'user_id2'
+        );
+    }
+
+    public function followers()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserFollowing::class,
+            'user_id2',
+            'id',
+            'id',
+            'user_id1'
+        );
+    }
     //endregion relations
 
     //region custom method
@@ -117,6 +141,15 @@ class User extends Authenticatable
     public function isBaseUser(): bool
     {
         return $this->type === self::USER_TYPE;
+    }
+
+    public function follow(User $user)
+    {
+        UserFollowing::create([
+            'user_id1' => $this->id,
+            'user_id2' => $user->id
+        ]);
+        return $user;
     }
     //endregion custom method
 }

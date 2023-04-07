@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Channel;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,11 +13,14 @@ class UsersTablesSeeder extends Seeder
      */
     public function run(): void
     {
-        if (User::count())
+        if (User::count()){
             User::truncate();
+            Channel::truncate();
+        }
 
         $this->createAdminUser();
-        $this->createUser();
+        for ($i = 0; $i < 9; $i++)
+            $this->createUser($i);
     }
 
     private function createAdminUser()
@@ -31,15 +35,15 @@ class UsersTablesSeeder extends Seeder
         $this->command->info('created defualt admin user');
     }
 
-    private function createUser()
+    private function createUser($num = 1)
     {
         $user = User::factory(1)->create([
             'type' => User::USER_TYPE,
-            'name' => 'Farzad User',
-            'email' => 'user@aparat.me',
-            'mobile' => '+989212167732',
+            'name' => 'User' . $num,
+            'email' => 'user' . $num .'@aparat.me',
+            'mobile' => '+989' . str_repeat($num, 9),
             'password' => bcrypt('123456')
         ]);
-        $this->command->info('created defualt user');
+        $this->command->info('created' . $num .' user');
     }
 }
