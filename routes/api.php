@@ -29,12 +29,17 @@ Route::group([], function($router){
 /**
  * User Route API
  */
-Route::group(['middleware' => 'auth:api'], function($router){
+Route::group(['middleware' => 'auth:api'], function($router){ //TODO add user prefix & fix it postman
     $router->post('change-email', [UserController::class, 'changeEmail'])->name('change.email');
 
     $router->post('change-email-submit', [UserController::class, 'changeEmailSubmit'])->name('change.email.submit');
 
     $router->match(['post', 'put'],'change-password', [UserController::class, 'changePassword'])->name('password.change');
+
+    $router->get('/followings', [UserController::class, 'followingsList'])->name('followings.list');
+
+    $router->get('/followers', [UserController::class, 'followersList'])->name('followers.list');
+
 });
 
 /**

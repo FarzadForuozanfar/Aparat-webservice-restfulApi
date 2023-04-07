@@ -18,4 +18,9 @@ class UserPolicy
     {
         return $user->id != $otherUser->id and $user->followings()->where('user_id2', $otherUser->id)->count();
     }
+
+    public function showFollows(User $user, User $targetUser): bool
+    {
+        return $user->id === $targetUser->id;
+    }
 }

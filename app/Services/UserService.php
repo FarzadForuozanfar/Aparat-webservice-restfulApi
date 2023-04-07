@@ -167,4 +167,14 @@ class UserService extends BaseService
             return response(['message' => 'خطا رخ داده است ' . $exception->getMessage()], 500);
         }
     }
+
+    public static function followingsList(Request $request)
+    {
+        return $request->user()->followings()->paginate();
+    }
+
+    public static function followersList(Request $request)
+    {
+        return $request->user()->followers()->paginate();
+    }
 }
