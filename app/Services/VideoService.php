@@ -152,57 +152,45 @@ class VideoService extends BaseService
         }
     }
 
-    public static function likeUnlikeVideo(Request $request)
-    {
-        $user   = auth('api')->user();
-        $video  = $request->video;
-        $like   = $request->like;
-
-        $favourite = $user?->favouriteVideos()->where(['video_id' => $video->id])->first();
-        if (empty($favourite))
-        {
-            $client_ip = clientIP();
-            if ($like)
-            {
-                if (!$user and VideoFavourite::where(['user_ip'=> $client_ip, 'user_id' => null, 'video_id' => $video->id])->count())
-                    return response(['message' => 'شما قبلا این ویدیو را لایک کرده اید'], 200);
-
-                VideoFavourite::create(['user_id' => $user?->id,
-                                        'video_id'=> $video->id,
-                                        'user_ip' => "$client_ip"]
-                );
-                return response(['message' => 'ویدیو با موفقیت لایک شد'],200);
-            }
-            else
-            {
-                if (!$user and VideoFavourite::where([
-                                                        'user_ip'=> "$client_ip",
-                                                        'user_id' => null,
-                                                        'video_id' => $video->id
-                                                    ])->delete())
-                    return response(['message' => 'ویدیو با موفقیت دیس لایک شد'], 200);
-
-                return response(['message' => 'عملیات غیر قابل قبول است'], 400);
-            }
-        }
-        else
-        {
-            if (!$like)
-            {
-                VideoFavourite::where(['user_id' => $user?->id, 'video_id' => $video->id])->delete();
-                return response(['message' => 'ویدیو با موفقیت دیس لایک شد'],200);
-            }
-            else
-            {
-                return response(['message' => 'شما قبلا این ویدیو را دیس لایک کردید'], 400);
-            }
-        }
-    }
-
     public static function likedByCurrentUser(Request $request)
     {
         $user   = $request->user();
-        $videos = $user->favouriteVideos()->paginate();
-        return $videos;
+        return $user->favouriteVideos()->paginate();
+    }
+
+    public static function likeVideo(Request $request)
+    {
+        try {
+            VideoFavourite::create(['user_id' => auth('api')->id(),
+                    'video_id'=> $request->video->id,
+                    'user_ip' => (string)clientIP()]
+            );
+            return response(['message' => 'ویدیو با موفقیت لایک شد'],200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            response(['message' => 'با خطا مواجه شد' . $exception->getMessage()], 500);
+        }
+    }
+
+    public static function unLikeVideo(Request $request)
+    {
+        try {
+            $conditions = [
+                'user_id' => auth('api')->id() ? auth('api')->id() : null,
+                'video_id' =>  $request->video->id
+            ];
+            if (empty($user))
+                $conditions['user_ip'] = clientIP();
+
+            VideoFavourite::where($conditions)->delete();
+            return response(['message' => 'ویدیو با موفقیت unlike شد'],200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            response(['message' => 'با خطا مواجه شد' . $exception->getMessage()], 500);
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\RepublishVideo;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoFavourite;
 
 class VideoPolicy
 {
@@ -40,7 +41,37 @@ class VideoPolicy
      */
     public function like(User $user = null, Video $video = null): bool
     {
-        return $video and $video->isAccepted();
+        if ($video and $video->isAccepted()) {
+            $conditions = [
+                'user_id' => $user?->id,
+                'video_id' => $video->id
+            ];
+            if (empty($user))
+                $conditions['user_ip'] = clientIP();
+
+            return VideoFavourite::where($conditions)->count() == 0;
+        }
+        return false;
+    }
+
+    /**
+     * @param User|null $user
+     * @param Video|null $video
+     * @return bool
+     */
+    public function unlike(User $user = null, Video $video = null): bool
+    {
+        if ($video and $video->isAccepted()) {
+            $conditions = [
+                'user_id' => $user?->id,
+                'video_id' => $video->id
+            ];
+            if (empty($user))
+                $conditions['user_ip'] = clientIP();
+
+            return (bool)VideoFavourite::where($conditions)->count();
+        }
+        return false;
     }
 
     /**

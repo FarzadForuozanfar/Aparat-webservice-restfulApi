@@ -8,6 +8,7 @@ use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\LikeVideoRequest;
 use App\Http\Requests\Video\ListVideoRequest;
 use App\Http\Requests\Video\RepublishVideoRequest;
+use App\Http\Requests\Video\UnLikeVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
 use App\Http\Requests\Video\UploadVideoRequest;
 use App\Services\VideoService;
@@ -45,10 +46,15 @@ class VideoController extends Controller
 
     public function Like(LikeVideoRequest $request)
     {
-        return VideoService::likeUnlikeVideo($request);
+        return VideoService::likeVideo($request);
     }
 
-    public function LikedByCurrentUser(LikedVideoRequest $request)
+    public function UnLike(UnLikeVideoRequest $request)
+    {
+        return VideoService::unLikeVideo($request);
+    }
+
+    public function LikedByCurrentUser(UnLikedVideoRequest $request)
     {
         return VideoService::likedByCurrentUser($request);
     }

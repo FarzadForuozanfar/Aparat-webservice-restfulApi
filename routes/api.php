@@ -73,9 +73,11 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->post('/{video}/republish', [VideoController::class, 'Republish'])->name('video.republish');
 
-    $router->post('/{video}/like', [VideoController::class, 'Like'])->name('video.like-unlike')->withoutMiddleware(['auth:api']);
+    $router->match(['post', 'get'], '/{video}/like', [VideoController::class, 'Like'])->name('video.like')->withoutMiddleware(['auth:api']);
 
-    $router->get('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked');
+    $router->match(['post', 'get'], '/{video}/unlike', [VideoController::class, 'UnLike'])->name('video.unlike')->withoutMiddleware(['auth:api']);
+
+    $router->get('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked.list');
 });
 
 /**
