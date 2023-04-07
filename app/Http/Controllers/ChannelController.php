@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Channel\FollowChannelRequest;
+use App\Http\Requests\Channel\UnFollowChannelRequest;
 use App\Http\Requests\Channel\UpdateChannelRequest;
 use App\Http\Requests\Channel\UpdateSocialsChannelRequest;
 use App\Http\Requests\Channel\UploadAvatarChannelRequest;
@@ -28,6 +29,11 @@ class ChannelController extends Controller
     public function Follow(FollowChannelRequest $request)
     {
         return ChannelService::followChannel($request);
+    }
+
+    public function UnFollow(UnFollowChannelRequest $request)
+    {
+        return ChannelService::unFollowChannel($request);
     }
 
 }

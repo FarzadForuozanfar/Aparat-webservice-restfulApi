@@ -151,5 +151,13 @@ class User extends Authenticatable
         ]);
         return $user;
     }
+
+    public function unfollow(User $user)
+    {
+        return UserFollowing::where([
+            'user_id1' => $this->id,
+            'user_id2' => $user->id
+        ])->delete();
+    }
     //endregion custom method
 }

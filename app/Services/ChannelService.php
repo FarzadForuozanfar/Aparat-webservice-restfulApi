@@ -103,4 +103,18 @@ class ChannelService extends BaseService
         }
     }
 
+    public static function unFollowChannel(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $user->unfollow($request->channel->user);
+            return response(['message' => 'با موفقیت از لیست دنبال شوندگان حذف شد'], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
+    }
+
 }
