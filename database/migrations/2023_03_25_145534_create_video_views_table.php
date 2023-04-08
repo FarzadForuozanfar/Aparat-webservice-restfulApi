@@ -15,6 +15,7 @@ return new class extends Migration
             $table->engine = "InnoDB";
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('user_ip', 100);
             $table->unsignedBigInteger('video_id');
 
             $table->timestamps();

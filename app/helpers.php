@@ -57,8 +57,11 @@ if (!function_exists('clientIP')) {
      *
      * @return string
      */
-    function clientIP(): string
+    function clientIP($withDate = false): string
     {
-        return $_SERVER['REMOTE_ADDR'] . '_' . md5($_SERVER['HTTP_USER_AGENT']);
+        $ip = $_SERVER['REMOTE_ADDR'] . '_' . md5($_SERVER['HTTP_USER_AGENT']);
+        if($withDate)
+            $ip .= '-' .now()->toDateString();
+        return $ip;
     }
 }
