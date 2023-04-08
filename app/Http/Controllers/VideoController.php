@@ -6,7 +6,7 @@ use App\Http\Requests\Video\LikedVideoRequest;
 use App\Http\Requests\Video\ChangeStateRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\LikeVideoRequest;
-use App\Http\Requests\Video\ListVideoRequest;
+use App\Http\Requests\Video\ShowVideoRequest;
 use App\Http\Requests\Video\RepublishVideoRequest;
 use App\Http\Requests\Video\UnLikeVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
@@ -15,7 +15,7 @@ use App\Services\VideoService;
 
 class VideoController extends Controller
 {
-    public function Index(ListVideoRequest $request)
+    public function Index(ShowVideoRequest $request)
     {
         return VideoService::list($request);
     }
@@ -54,8 +54,13 @@ class VideoController extends Controller
         return VideoService::unLikeVideo($request);
     }
 
-    public function LikedByCurrentUser(UnLikedVideoRequest $request)
+    public function LikedByCurrentUser(LikedVideoRequest $request)
     {
         return VideoService::likedByCurrentUser($request);
+    }
+
+    public function Show(ShowVideoRequest $request)
+    {
+        return VideoService::showVideo($request);
     }
 }

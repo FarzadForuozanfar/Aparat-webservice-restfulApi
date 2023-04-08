@@ -130,6 +130,11 @@ class User extends Authenticatable
             'user_id1'
         );
     }
+
+    public function views()
+    {
+        return $this->belongsToMany(Video::class, 'video_views')->withTimestamps();
+    }
     //endregion relations
 
     //region custom method

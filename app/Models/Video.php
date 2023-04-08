@@ -31,6 +31,11 @@ class Video extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function viewers()
+    {
+        return $this->belongsToMany(User::class, 'video_views')->withTimestamps();
+    }
     //endregion relations
 
     //region override method

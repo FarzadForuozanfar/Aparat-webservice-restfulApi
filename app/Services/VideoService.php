@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\UploadNewVideo;
+use App\Events\VisitVideo;
 use App\Models\PlayList;
 use App\Models\RepublishVideo;
 use App\Models\Video;
@@ -192,5 +193,11 @@ class VideoService extends BaseService
             Log::error($exception);
             response(['message' => 'با خطا مواجه شد' . $exception->getMessage()], 500);
         }
+    }
+
+    public static function showVideo(Request $request)
+    {
+        event(new VisitVideo($request->video));
+        return $request->video;
     }
 }
