@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Channel;
+use App\Models\Video;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,6 +116,33 @@ class ChannelService extends BaseService
             Log::error($exception);
             return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
         }
+    }
+
+    public static function statistics(Request $request)
+    {
+        //TODO نوشتن تابعی که تعداد کل کامنت ها در وضعیت تایید شده و رد شده و در انتظار نمایش بده
+        $comments = Video::channelComments($request->user()->id)
+                    ->selectRaw('comments.*')->count();
+
+        $data = [
+            'data' => [],
+            'total_views' => 0,
+            'total_followers' => $request->user()->followers()->count(),
+            'total_videos' => $request->user()->channelVideos()->count(),
+            'total_republished' => $request->user()->republishedVideos()->count(),
+            'total_comments' => $comments
+        ];
+
+        $videos = Video::views($request->user()->id)
+            ->selectRaw('date(video_views.created_at) as date, COUNT(*) as views')
+            ->groupByRaw('date(video_views.created_at)')
+            ->get()
+            ->each(function ($item) use (&$data){
+                $data['total_views'] += $item->views;
+                $data['data'][$item->date] = $item->views;
+        });
+
+        return $data;
     }
 
 }

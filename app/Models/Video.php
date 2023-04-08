@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use JetBrains\PhpStorm\Pure;
 
 class Video extends Model
@@ -35,6 +36,11 @@ class Video extends Model
     public function viewers()
     {
         return $this->belongsToMany(User::class, 'video_views')->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
     //endregion relations
 
@@ -95,6 +101,26 @@ class Video extends Model
     public static function whereNotRepublished()
     {
         return static::whereRaw('id NOT IN (SELECT video_id FROM video_republishes)');
+    }
+
+    /**
+     * @param $userId
+     * @return Builder
+     */
+    public static function views($userId)
+    {
+        return static::where('videos.user_id', $userId)
+            ->Join('video_views', 'videos.id', '=', 'video_views.video_id');
+    }
+
+    /**
+     * @param $userId
+     * @return Builder
+     */
+    public static function channelComments($userId)
+    {
+        return static::where('videos.user_id', $userId)
+            ->Join('comments', 'videos.id', '=', 'comments.video_id');
     }
     //endregion
 }

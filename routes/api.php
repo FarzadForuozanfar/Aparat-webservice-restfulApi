@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/channel'], function($rou
 
     $router->match(['post', 'get'],'/{channel}/unfollow',
         [ChannelController::class, 'UnFollow'])->name('channel.unfollow');
+
+    $router->get('/statistics', [ChannelController::class, 'Statistics'])->name('channel.statistics');
 });
 
 /**

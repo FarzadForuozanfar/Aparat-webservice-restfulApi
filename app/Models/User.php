@@ -135,6 +135,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Video::class, 'video_views')->withTimestamps();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     //endregion relations
 
     //region custom method
