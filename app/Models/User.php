@@ -171,4 +171,16 @@ class User extends Authenticatable
         ])->delete();
     }
     //endregion custom method
+
+    //region override method
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($user){
+            $user->channelVideos()->delete();
+            $user->playlist()->delete();
+            $user->videos()->delete();
+        });
+    }
+    //endregion
 }

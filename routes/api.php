@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth:api'], function($router){ //TODO add user pr
 
     $router->get('/followers', [UserController::class, 'followersList'])->name('followers.list');
 
+    $router->delete('/me', [UserController::class, 'unRegister'])->name('user.unregister');
 });
 
 /**

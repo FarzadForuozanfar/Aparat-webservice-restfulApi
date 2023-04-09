@@ -177,4 +177,21 @@ class UserService extends BaseService
     {
         return $request->user()->followers()->paginate();
     }
+
+    public static function unRegisterUser(Request $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $request->user()->delete();
+            DB::commit();
+            return response(['message' => 'کاربر با موفقیت غیرفعال شد'], 200);
+        }
+        catch (Exception $exception)
+        {
+            DB::rollBack();
+            Log::error($request->user, $exception->getMessage());
+            return response(['message' => $exception->getMessage()], 500);
+        }
+    }
 }

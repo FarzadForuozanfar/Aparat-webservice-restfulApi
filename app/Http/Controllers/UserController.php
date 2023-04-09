@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\FollowersListRequest;
+use App\Http\Requests\User\unRegisterUserRequest;
 use App\Http\Requests\User\ChangeEmailSubmitRequest;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Services\UserService;
@@ -10,7 +10,7 @@ use App\Services\UserService;
 class UserController extends Controller
 {
 
-    public function  changeEmail(FollowersListRequest $request)
+    public function  changeEmail(unRegisterUserRequest $request)
     {
         return UserService::changeEmailUser($request);
     }
@@ -25,14 +25,18 @@ class UserController extends Controller
         return UserService::changePasswordUser($request);
     }
 
-    public function followingsList(FollowersListRequest $request)
+    public function followingsList(unRegisterUserRequest $request)
     {
         return UserService::followingsList($request);
     }
 
-    public function followersList(FollowersListRequest $request)
+    public function followersList(unRegisterUserRequest $request)
     {
         return UserService::followersList($request);
     }
 
+    public function unRegister(unRegisterUserRequest $request)
+    {
+        return UserService::unRegisterUser($request);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class FollowersListRequest extends FormRequest
+class unRegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
