@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Comment;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CommentService extends BaseService
@@ -58,11 +59,14 @@ class CommentService extends BaseService
     public static function delete(Request $request)
     {
         try {
+            DB::beginTransaction();
             $request->comment->delete();
+            DB::commit();
             return response(['message' => 'با موفقیت پاک شد'], 200);
         }
         catch (\Exception $exception)
         {
+            DB::rollBack();
             Log::error($exception, $request->comment);
             return response(['message' => $exception->getMessage()], 500);
         }
