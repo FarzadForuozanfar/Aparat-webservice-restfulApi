@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class  Channel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     //region model configs
     protected $table    = "channels";
     protected $fillable = ['name', 'user_id', 'info', 'banner', 'socials'];

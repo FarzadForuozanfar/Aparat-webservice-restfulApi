@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('icon', 50);
             $table->string('banner')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('set null')

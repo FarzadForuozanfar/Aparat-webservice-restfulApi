@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use JetBrains\PhpStorm\Pure;
 
 class Video extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     const PENDING   = 'pending'; // پردازش در صف
     const CONVERTED = 'converted'; // تبدیل انجام شده
     const ACCEPT    = 'accept'; // پذیرفته شده و انشار یافته

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('verified_code', 6)->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

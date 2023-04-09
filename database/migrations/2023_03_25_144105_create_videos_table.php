@@ -27,7 +27,7 @@ return new class extends Migration
             $table->enum('state',Video::STATES)->default(Video::PENDING);
             $table->timestamp('publish_at')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('user_id')
                     ->references('id')->on('users')
                     ->onDelete('set null')
