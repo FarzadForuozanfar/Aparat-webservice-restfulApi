@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\Comment;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CommentService extends BaseService
 {
@@ -16,6 +17,26 @@ class CommentService extends BaseService
         if ($state)
             $comments = $comments->where(['comments.state' => $state]);
         return ['data' => $comments->get(), 'total' => $comments->count()];
+    }
+
+    public static function CreateComment(Request $request)
+    {
+        try {
+            $video   = Video::find($request->video_id);
+            $comment = $request->user()->comments()->create([
+                'video_id' => $request->video_id,
+                'parent_id' => $request->parent_id,
+                'body' => $request->body,
+                'state' => $video->user_id == $request->user()->id ? Comment::ACCEPTED : Comment::PENDING
+            ]);
+
+            return response(['data' => $comment], 200);
+        }
+        catch (\Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
     }
 
 }
