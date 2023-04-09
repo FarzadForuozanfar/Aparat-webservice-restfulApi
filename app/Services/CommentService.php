@@ -19,7 +19,7 @@ class CommentService extends BaseService
         return ['data' => $comments->get(), 'total' => $comments->count()];
     }
 
-    public static function CreateComment(Request $request)
+    public static function createComment(Request $request)
     {
         try {
             $video   = Video::find($request->video_id);
@@ -36,6 +36,22 @@ class CommentService extends BaseService
         {
             Log::error($exception);
             return response(['message' => 'خطا رخ داده است' . $exception->getMessage()], 500);
+        }
+    }
+
+    public static function changeState(Request $request)
+    {
+        try {
+            $comment        = $request->comment;
+            $comment->state = $request->state;
+            $comment->save();
+
+            return response(['message' => 'با موفقیت تغییر وضعیت به ' . $request->state . ' داده شد '], 200);
+        }
+        catch (\Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => $exception->getMessage()], 500);
         }
     }
 

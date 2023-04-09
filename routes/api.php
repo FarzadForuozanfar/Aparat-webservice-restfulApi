@@ -139,11 +139,11 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/tags'], function($router
  * Comments Route API
  */
 Route::group(['middleware' => 'auth:api', 'prefix' => '/comments'], function($router){
-    $router->post('/',
-        [CommentController::class, 'Create'])->name('comment.create');
+    $router->post('/', [CommentController::class, 'Create'])->name('comment.create');
 
-    $router->get('/',
-        [CommentController::class, 'Index'])->name('comment.all');
+    $router->get('/', [CommentController::class, 'Index'])->name('comment.all');
+
+    $router->match(['put', 'post'], '/{comment}/state', [CommentController::class, 'ChangeState'])->name('comment.change.state');
 });
 
 

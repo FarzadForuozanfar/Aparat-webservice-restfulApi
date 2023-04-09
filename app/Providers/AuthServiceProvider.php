@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
+use App\Policies\CommentPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\VideoPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -21,6 +23,8 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Video::class => VideoPolicy::class,
         User::class => UserPolicy::class,
+        Comment::class => CommentPolicy::class,
+
     ];
 
     /**
