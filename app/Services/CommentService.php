@@ -55,4 +55,17 @@ class CommentService extends BaseService
         }
     }
 
+    public static function delete(Request $request)
+    {
+        try {
+            $request->comment->delete();
+            return response(['message' => 'با موفقیت پاک شد'], 200);
+        }
+        catch (\Exception $exception)
+        {
+            Log::error($exception, $request->comment);
+            return response(['message' => $exception->getMessage()], 500);
+        }
+    }
+
 }

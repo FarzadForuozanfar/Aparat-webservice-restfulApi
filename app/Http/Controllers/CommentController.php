@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\ChangeStateCommentRequest;
+use App\Http\Requests\Comment\DeleteCommentRequest;
 use App\Services\CommentService;
 
 class CommentController extends Controller
@@ -20,5 +21,10 @@ class CommentController extends Controller
     public function ChangeState (ChangeStateCommentRequest $request)
     {
         return CommentService::changeState($request);
+    }
+
+    public function Delete (DeleteCommentRequest $request)
+    {
+        return CommentService::delete($request);
     }
 }

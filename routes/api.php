@@ -144,6 +144,9 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/comments'], function($ro
     $router->get('/', [CommentController::class, 'Index'])->name('comment.all');
 
     $router->match(['put', 'post'], '/{comment}/state', [CommentController::class, 'ChangeState'])->name('comment.change.state');
+
+    $router->delete('/{comment}', [CommentController::class, 'Delete'])->name('comment.delete');
+
 });
 
 

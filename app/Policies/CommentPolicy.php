@@ -23,4 +23,9 @@ class CommentPolicy
         }
         return false;
     }
+
+    public function delete(User $user, Comment $comment)
+    {
+        return $user->id == $comment->video->user_id;
+    }
 }
