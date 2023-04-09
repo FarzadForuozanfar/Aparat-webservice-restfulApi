@@ -10,6 +10,15 @@ class Comment extends Model
     use HasFactory;
     protected $guarded = [];
 
+    //region constant
+    const PENDING  = 'pending';
+    const ACCEPTED = 'accepted';
+    const READ     = 'read';
+    const BLOCKED  = 'blocked';
+
+    const STATES = [self::PENDING, self::ACCEPTED, self::READ, self::BLOCKED];
+    //endregion
+
     //region relations
     public function video()
     {
@@ -24,6 +33,13 @@ class Comment extends Model
     public function parent()
     {
         return $this->belongsTo(Comment::class, 'parent_id');
+    }
+    //endregion
+
+    //region custom static method
+    public static function channelComments($userId)
+    {
+        return Comment::join('videos', 'comments.video_id',  '=', 'videos.id')->selectRaw('comments.*')->where(['videos.user_id' => $userId]);
     }
     //endregion
 }

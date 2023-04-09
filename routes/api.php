@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -133,6 +134,18 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/tags'], function($router
     $router->get('/',
         [TagController::class, 'Index'])->name('tag.all');
 });
+
+/**
+ * Comments Route API
+ */
+Route::group(['middleware' => 'auth:api', 'prefix' => '/comments'], function($router){
+    $router->post('/',
+        [CommentController::class, 'Create'])->name('comment.create');
+
+    $router->get('/',
+        [CommentController::class, 'Index'])->name('comment.all');
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
