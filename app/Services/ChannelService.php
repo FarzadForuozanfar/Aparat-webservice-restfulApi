@@ -123,6 +123,7 @@ class ChannelService extends BaseService
         //TODO نوشتن تابعی که تعداد کل کامنت ها در وضعیت تایید شده و رد شده و در انتظار نمایش بده
         $comments = Video::channelComments($request->user()->id)
                     ->selectRaw('comments.*')->count();
+        $from_date = now()->subDays($request->get('last_n_days', 7))->toDateString();
 
         $data = [
             'data' => [],
@@ -134,6 +135,7 @@ class ChannelService extends BaseService
         ];
 
         $videos = Video::views($request->user()->id)
+            ->whereRaw("date(video_views.created_at) >= '{$from_date}'")
             ->selectRaw('date(video_views.created_at) as date, COUNT(*) as views')
             ->groupByRaw('date(video_views.created_at)')
             ->get()

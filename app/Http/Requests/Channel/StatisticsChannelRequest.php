@@ -23,7 +23,7 @@ class StatisticsChannelRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'last_n_days' => 'nullable|in:7,14,30,90'
         ];
     }
 }
