@@ -241,4 +241,39 @@ class VideoService extends BaseService
             });
         return $data;
     }
+
+    public static function updateVideo(Request $request)
+    {
+        $video = $request->video;
+        try
+        {
+            DB::beginTransaction();
+            $video->title               = $request->has('title') ? $request->title : $video->title;
+            $video->info                = $request->has('info') ? $request->info : $video->info;
+            $video->category_id         = $request->has('category') ? $request->category : $video->category_id;
+            $video->channel_category_id = $request->has('channel_category') ? $request->channel_category : $video->channel_category_id;
+            $video->enable_comments     = $request->has('enable_comments') ? $request->enable_comments : $video->enable_comments;
+
+            if ($request->banner)
+            {
+                Storage::disk('video')->delete(auth()->id() . $video->banner);
+                Storage::disk('video')->move('/tmp/' . $request->banner, auth()->id() . '/' . $video->banner);
+            }
+
+            if (!empty($request->tags))
+            {
+                $video->tags()->sync($request->tags);
+            }
+            $video->save();
+            DB::commit();
+            return response(['message' => 'ویدیو با موفقیت آپلود شد', 'data' => $video], 200);
+        }
+        catch (Exception $exception)
+        {
+            //TODO delete banner & video if exist in directory
+            Log::error($request.$exception);
+            DB::rollBack();
+            return response(['message' => 'خطا رخ داده است'], 500);
+        }
+    }
 }

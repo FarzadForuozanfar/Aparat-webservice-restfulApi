@@ -93,4 +93,9 @@ class VideoPolicy
     {
         return $user->id == $video->user_id;
     }
+
+    public function update(User $user, Video $video): bool
+    {
+        return $user->id == $video->user_id;
+    }
 }

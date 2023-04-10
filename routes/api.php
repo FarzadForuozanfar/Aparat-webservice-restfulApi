@@ -94,6 +94,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->get('/{video}/statistics', [VideoController::class, 'Statistics'])->name('video.statistics');
 
+    $router->put('/{video}', [VideoController::class, 'Edit'])->name('video.edit');
+
 });
 
 /**

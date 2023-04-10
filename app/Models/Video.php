@@ -61,6 +61,7 @@ class Video extends Model
             $conditions['user_id'] = auth('api')->id();
         }
         $data['liked'] = VideoFavourite::where($conditions)->count();
+        $data['tags']  = $this->tags;
         return $data;
     }
     //endregion override method
