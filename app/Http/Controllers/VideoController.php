@@ -9,6 +9,7 @@ use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\LikeVideoRequest;
 use App\Http\Requests\Video\ShowVideoRequest;
 use App\Http\Requests\Video\RepublishVideoRequest;
+use App\Http\Requests\Video\StatisticsVideoRequest;
 use App\Http\Requests\Video\UnLikeVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
 use App\Http\Requests\Video\UploadVideoRequest;
@@ -68,5 +69,10 @@ class VideoController extends Controller
     public function Delete(DeleteVideoRequest $request)
     {
         return VideoService::deleteVideo($request);
+    }
+
+    public function Statistics(StatisticsVideoRequest $request)
+    {
+        return VideoService::statisticsVideo($request);
     }
 }

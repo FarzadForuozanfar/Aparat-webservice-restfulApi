@@ -92,6 +92,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->delete('/{video}', [VideoController::class, 'Delete'])->name('video.delete');
 
+    $router->get('/{video}/statistics', [VideoController::class, 'Statistics'])->name('video.statistics');
+
 });
 
 /**

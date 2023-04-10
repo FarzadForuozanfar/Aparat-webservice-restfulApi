@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\DeleteVideoEvent;
 use App\Events\UploadNewVideo;
 use App\Events\VisitVideo;
+use App\Http\Requests\Video\LikeVideoRequest;
 use App\Models\PlayList;
 use App\Models\RepublishVideo;
 use App\Models\Video;
@@ -160,7 +161,7 @@ class VideoService extends BaseService
         return $user->favouriteVideos()->paginate();
     }
 
-    public static function likeVideo(Request $request)
+    public static function likeVideo(LikeVideoRequest $request)
     {
         try {
             VideoFavourite::create(['user_id' => auth('api')->id(),
@@ -217,5 +218,27 @@ class VideoService extends BaseService
             Log::error($exception);
             return response(['message' => $exception->getMessage()],500);
         }
+    }
+
+    public static function statisticsVideo(Request $request)
+    {
+        $video     = $request->video;
+        $from_date = now()->subDays($request->get('last_n_days', 7))->toDateString();
+        $data      = [
+            'views' => [],
+            'total_views' => 0,
+
+        ];
+        Video::views($request->user()->id)
+            ->where('videos.id' , $video->id)
+            ->whereRaw("date(video_views.created_at) >= '{$from_date}'")
+            ->selectRaw('date(video_views.created_at) as date, COUNT(*) as views')
+            ->groupByRaw('date(video_views.created_at)')
+            ->get()
+            ->each(function ($item) use (&$data){
+                $data['total_views'] += $item->views;
+                $data['views'][$item->date] = $item->views;
+            });
+        return $data;
     }
 }

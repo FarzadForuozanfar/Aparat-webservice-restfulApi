@@ -84,9 +84,13 @@ class VideoPolicy
         return isset($user);
     }
 
-    public function deleteVideo(User $user, Video $video)
+    public function deleteVideo(User $user, Video $video): bool
     {
         return $user->id == $video->user_id;
     }
 
+    public function ShowStatistics(User $user, Video $video): bool
+    {
+        return $user->id == $video->user_id;
+    }
 }
