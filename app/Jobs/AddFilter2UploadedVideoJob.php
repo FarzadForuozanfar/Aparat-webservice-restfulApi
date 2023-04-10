@@ -27,7 +27,7 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
      * Create a new job instance.
      * @param Video $video
      * @param $video_id
-     * @param $enable_watermark
+     * @param bool $enable_watermark
      */
     public function __construct(Video $video, $video_id, bool $enable_watermark)
     {
@@ -43,17 +43,18 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
-            /** @var Media $videoFile */
-            $tmpPath       = '/tmp/' . $this->video_id;
+        $tmpPath = '/tmp/' . $this->video_id;
+        if (Video::where(['id' => $this->video->id])->count())
+        {
             $channelName   = $this->user->channel->name;
+            /** @var Media $videoFile */
             $videoFile     = FFMpeg::fromDisk('video')->open($tmpPath);
             $format        = new \FFMpeg\Format\Video\X264('libmp3lame');
             if ($this->enable_watermark)
             {
                 $filter = new CustomFilter("drawtext=text='aparat.me/{$channelName}': fontcolor=blue: fontsize=24:
-                          box=1: boxcolor=white@0.4: boxborderw=5:
-                          x=10: y=(h - text_h - 10)");
+                         box=1: boxcolor=white@0.4: boxborderw=5:
+                         x=10: y=(h - text_h - 10)");
                 $videoFile = $videoFile->addFilter($filter);
             }
             $videoFilter = $videoFile->export()->toDisk('video')->inFormat($format);
@@ -63,10 +64,7 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
             $this->video->state = Video::CONVERTED;
             $this->video->save();
         }
-        catch (\Exception $exception)
-        {
-            Log::error($exception);
-        }
+        Storage::disk('video')->delete($tmpPath);
     }
 
     /**

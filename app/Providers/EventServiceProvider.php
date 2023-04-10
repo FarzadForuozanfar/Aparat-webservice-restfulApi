@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\DeleteVideoEvent;
 use App\Events\UploadNewVideo;
 use App\Events\VisitVideo;
 use Illuminate\Auth\Events\Registered;
@@ -31,6 +32,10 @@ class EventServiceProvider extends ServiceProvider
 
         AccessTokenCreated::class => [
             'App\Listeners\ActiveUnregisterUser'
+        ],
+
+        DeleteVideoEvent::class =>[
+            'App\Listeners\DeleteVideoData'
         ],
     ];
 

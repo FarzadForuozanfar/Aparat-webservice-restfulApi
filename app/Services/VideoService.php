@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\DeleteVideoEvent;
 use App\Events\UploadNewVideo;
 use App\Events\VisitVideo;
 use App\Models\PlayList;
@@ -199,5 +200,22 @@ class VideoService extends BaseService
     {
         event(new VisitVideo($request->video));
         return $request->video;
+    }
+
+    public static function deleteVideo(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $request->video->forceDelete();
+            event(new DeleteVideoEvent($request->video));
+            DB::commit();
+            return response(['message' => 'ویدیو با موفقیت حذف شد'],200);
+        }
+        catch (Exception $exception)
+        {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => $exception->getMessage()],500);
+        }
     }
 }
