@@ -7,6 +7,8 @@ use App\Events\VisitVideo;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Laravel\Passport\Events\AccessTokenCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
 
         VisitVideo::class => [
             'App\Listeners\AddVisitedVideo2VideoViewsTable'
+        ],
+
+        AccessTokenCreated::class => [
+            'App\Listeners\ActiveUnregisterUser'
         ],
     ];
 

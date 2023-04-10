@@ -51,9 +51,14 @@ class User extends Authenticatable
         'verified_at' => 'datetime',
     ];
 
-    public function findForPassport($username)
+    /**
+     * find user o base email or mobile
+     * @param $username
+     * @return User
+     */
+    public function findForPassport($username): User
     {
-        $user = static::where('mobile',$username)->orwhere('email',$username)->first();
+        $user = static::withTrashed()->where('mobile',$username)->orwhere('email',$username)->first();
         return $user;
     }
 
@@ -179,7 +184,12 @@ class User extends Authenticatable
         static::deleting(function ($user){
             $user->channelVideos()->delete();
             $user->playlist()->delete();
-            $user->videos()->delete();
+            $user->channel()->delete();
+        });
+        static::restoring(function ($user){
+            $user->channelVideos()->restore();
+            $user->playlist()->restore();
+            $user->channel()->restore();
         });
     }
     //endregion
