@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Channel;
 use App\Models\Comment;
+use App\Models\PlayList;
 use App\Models\Video;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -56,6 +57,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('video', Video::class);
         Route::model('channel', Channel::class);
         Route::model('comment', Comment::class);
-
+        Route::model('playlist', PlayList::class);
     }
 }

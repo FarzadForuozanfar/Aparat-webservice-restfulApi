@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\PlayList;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PlaylistService extends BaseService
@@ -20,7 +21,7 @@ class PlaylistService extends BaseService
         return auth()->user()->playlist;
     }
 
-    public static function CreatePlaylist(Request $request)
+    public static function createPlaylist(Request $request)
     {
         try
         {
@@ -33,6 +34,20 @@ class PlaylistService extends BaseService
         {
             Log::error($exception);
             return response(['message' => 'خطا رخ داده است'] , 500);
+        }
+    }
+
+    public static function attachVideo(Request $request)
+    {
+        try {
+            DB::table('playlists_videos')->where(['video_id' => $request->video->id])->delete();
+            $request->playlist->videos()->syncWithoutDetaching($request->video->id);
+            return response(['message' => 'ویدیو با موفقی به لیست پخش اضافه شد'],200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception);
+            return response(['message' => $exception->getMessage()], 500);
         }
     }
 }

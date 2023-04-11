@@ -262,7 +262,7 @@ class VideoService extends BaseService
 
             if (!empty($request->tags))
             {
-                $video->tags()->sync($request->tags);
+                $video->tags()->syncWithoutDetaching($request->tags);
             }
             $video->save();
             DB::commit();

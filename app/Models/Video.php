@@ -6,17 +6,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\Pure;
 
 class Video extends Model
 {
     use HasFactory, SoftDeletes;
+    //region const var
     const PENDING   = 'pending'; // پردازش در صف
     const CONVERTED = 'converted'; // تبدیل انجام شده
     const ACCEPT    = 'accept'; // پذیرفته شده و انشار یافته
     const BLOCKED   = 'blocked'; // محتوا ویدیو مناسب نبود
     const STATES    = [self::PENDING, self::CONVERTED, self::ACCEPT, self::BLOCKED];
+    //endregion
     protected $guarded = [];
+
+    //region getters
+    public function getVideoLinkAttr()
+    {
+        return Storage::disk('video')->url($this->user_id . '/' . $this->slug . '.mp4');
+    }
+
+    public function getVideoBannerLinkAttr()
+    {
+        return Storage::disk('video')->url($this->user_id . '/' . $this->slug . '_banner');
+    }
+    //endregion
 
     //region relations
     public function playlist()
@@ -62,6 +77,10 @@ class Video extends Model
         }
         $data['liked'] = VideoFavourite::where($conditions)->count();
         $data['tags']  = $this->tags;
+        $data['views'] = VideoView::where(['video_id' => $this->id])->count();
+        $data['link']  = $this->getVideoLinkAttr();
+        $data['banner_link']  = $this->getVideoBannerLinkAttr();
+
         return $data;
     }
     //endregion override method

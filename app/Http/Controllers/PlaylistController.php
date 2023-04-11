@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Playlist\AllPlaylistRequest;
+use App\Http\Requests\Playlist\AttachVideoRequest;
 use App\Http\Requests\Playlist\CreatePlaylistRequest;
 use App\Services\PlaylistService;
 
@@ -20,7 +21,12 @@ class PlaylistController extends Controller
 
     public function Create(CreatePlaylistRequest $request)
     {
-        return PlaylistService::CreatePlaylist($request);
+        return PlaylistService::createPlaylist($request);
+    }
+
+    public function AttachVideo(AttachVideoRequest $request)
+    {
+        return PlaylistService::attachVideo($request);
     }
 
 }

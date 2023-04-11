@@ -129,6 +129,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/playlist'], function($ro
 
     $router->get('/my',
         [PlaylistController::class, 'My'])->name('playlist.my');
+
+    $router->match(['post', 'put'], '/{playlist}/{video}', [PlaylistController::class, 'AttachVideo'])->name('playlist.addVideo');
 });
 
 /**
