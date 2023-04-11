@@ -107,7 +107,7 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Video::class,
         VideoFavourite::class,
-        'user_id', //video_republishes.user_id
+        'user_id', //VideoFavourite.user_id
         'id', // video.id
         'id',  // user.id
         'video_id');

@@ -132,7 +132,10 @@ class VideoService extends BaseService
         }
         else
         {
-            $videos = $user ? $user->videos() : Video::query()->union(RepublishVideo::query()); //TODO درصورت لاگین نبودن یوزر دومی اجرا می شود ولی تمام ویدیو ها را میده باید با بازنشر شده ها جوین بزنه
+            $videos = $user ? $user->videos() : Video::query()->selectRaw('*,0 as republished')->union(DB::table('videos')
+                ->select('videos.*', DB::raw('1 as republished'))
+                ->join('video_republishes', 'video_republishes.video_id', '=', 'videos.id')
+                ->whereNull('videos.deleted_at'));
         }
 
         return $videos->orderByDesc('updated_at')->paginate();//TODO define size of paginate for video in config
@@ -200,7 +203,16 @@ class VideoService extends BaseService
     public static function showVideo(Request $request)
     {
         event(new VisitVideo($request->video));
-        return $request->video;
+        $conditions    = ['user_id' => null, 'video_id' => $request->video->id];
+        if (!auth('api')->check())
+        {
+            $conditions['user_ip'] = clientIP();
+            $conditions['user_id'] = auth('api')->id();
+        }
+        $videoData          = $request->video;
+        $videoData['liked'] = VideoFavourite::where($conditions)->count();
+        $videoData['tags']  = $videoData->tags;
+        return $videoData;
     }
 
     public static function deleteVideo(Request $request)
@@ -275,5 +287,10 @@ class VideoService extends BaseService
             DB::rollBack();
             return response(['message' => 'خطا رخ داده است'], 500);
         }
+    }
+
+    public static function showVideoComments(Request $request)
+    {
+        return $request->video->comments()->paginate();
     }
 }

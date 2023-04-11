@@ -81,4 +81,9 @@ class VideoController extends Controller
     {
         return VideoService::statisticsVideo($request);
     }
+
+    public function ShowComments(ShowVideoCommentsRequest $request)
+    {
+        return VideoService::showVideoComments($request);
+    }
 }
