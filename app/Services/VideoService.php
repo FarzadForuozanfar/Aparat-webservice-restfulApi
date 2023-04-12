@@ -149,7 +149,7 @@ class VideoService extends BaseService
                 ->whereNull('videos.deleted_at'));
         }
 
-        return $videos->orderByDesc('updated_at')->paginate();//TODO define size of paginate for video in config
+        return $videos->orderByDesc('updated_at')->paginate((int)config('app.pagination_limit.md'));
     }
 
     public static function republish(Request $request)
@@ -223,7 +223,7 @@ class VideoService extends BaseService
         $videoData             = $request->video;
         $videoData['liked']    = VideoFavourite::where($conditions)->count();
         $videoData['tags']     = $videoData->tags;
-        $videoData['related']  = $videoData->related()->take(5)->get(); //TODO add limit count 2 config & env
+        $videoData['related']  = $videoData->related()->take((int)config('app.pagination_limit.sm'))->get();
         $videoData['playlist'] = $videoData->playlist()->with('videos')->first();
         return $videoData;
     }
@@ -304,7 +304,7 @@ class VideoService extends BaseService
 
     public static function showVideoComments(Request $request)
     {
-        return sort_comments($request->video->comments()->paginate());//TODO just show accept comments & add paginate
+        return sort_comments($request->video->comments()->paginate((int)config('app.pagination_limit.sm')));//TODO just show accept comments
     }
 
     public static function favoritesVideoList(Request $request)

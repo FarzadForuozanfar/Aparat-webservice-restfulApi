@@ -217,4 +217,11 @@ return [
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
     ])->toArray(),
 
+    /*Custom configs*/
+    'pagination_limit' => [
+        'sm' => env('PAGINATION_SM_LIMIT', 5),
+        'md' => env('PAGINATION_MD_LIMIT', 10),
+        'xl' => env('PAGINATION_XL_LIMIT', 15)
+    ],
+
 ];
