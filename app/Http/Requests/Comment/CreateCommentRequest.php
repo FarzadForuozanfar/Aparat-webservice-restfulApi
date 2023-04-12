@@ -26,7 +26,7 @@ class CreateCommentRequest extends FormRequest
     {
         return [
             'video_id' => 'required|exists:videos,id',
-            'parent_id' => 'nullable|exists:comments,id',//TODO VideoID parent === VideoID child parent
+            'parent_id' => 'nullable|exists:comments,id',
             'body' => 'required|string|max:1000'
         ];
     }

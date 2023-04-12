@@ -83,7 +83,18 @@ class VideoService extends BaseService
         }
         catch (Exception $exception)
         {
-            //TODO delete banner & video if exist in directory
+            try {
+                if (Storage::disk('video')->exists('/tmp/' . $request->banner))
+                    Storage::disk('video')->delete('/tmp/' . $request->banner);
+
+                if (Storage::disk('video')->exists('/tmp/' . $request->video_id))
+                    Storage::disk('video')->delete('/tmp/' . $request->video_id);
+            }
+            catch (Exception $ex)
+            {
+                Log::error($ex);
+            }
+
             Log::error($request.$exception);
             DB::rollBack();
             return response(['message' => 'خطا رخ داده است'], 500);
