@@ -295,4 +295,22 @@ class VideoService extends BaseService
     {
         return sort_comments($request->video->comments()->paginate());//TODO just show accept comments & add paginate
     }
+
+    public static function favoritesVideoList(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $videos = $request->user()
+            ->favouriteVideos()
+            ->selectRaw('videos.*, channels.name as channelName')
+            ->leftJoin('channels', 'channels.user_id', '=', 'videos.user_id')
+            ->get();
+        return [
+            'videos' => $videos,
+            'total_favVideos' => count($videos),
+            'total_comments' => Video::channelComments($request->user()->id)
+                ->selectRaw('comments.*')->count(),
+            'total_videos' => $request->user()->channelVideos()->count(),
+            'total_views' => Video::views($user_id)->count()
+        ];
+    }
 }

@@ -88,6 +88,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
 
     $router->get('/liked', [VideoController::class, 'LikedByCurrentUser'])->name('video.liked.list');
 
+    $router->get('/favorites', [VideoController::class, 'Favorites'])->name('video.favorites');
+
     $router->get('/{video}', [VideoController::class, 'Show'])->name('video.show')->withoutMiddleware(['auth:api']);
 
     $router->delete('/{video}', [VideoController::class, 'Delete'])->name('video.delete');
@@ -97,7 +99,6 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/video'], function($route
     $router->put('/{video}', [VideoController::class, 'Edit'])->name('video.edit');
 
     $router->get('/{video}/comments', [VideoController::class, 'ShowComments'])->name('video.show.comments')->withoutMiddleware(['auth:api']);
-
 
 });
 
