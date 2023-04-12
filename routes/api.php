@@ -30,7 +30,7 @@ Route::group([], function($router){
 /**
  * User Route API
  */
-Route::group(['middleware' => 'auth:api'], function($router){ //TODO add user prefix & fix it postman
+Route::group(['middleware' => 'auth:api'], function($router){
     $router->post('change-email', [UserController::class, 'changeEmail'])->name('change.email');
 
     $router->post('change-email-submit', [UserController::class, 'changeEmailSubmit'])->name('change.email.submit');
