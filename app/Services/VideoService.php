@@ -213,6 +213,7 @@ class VideoService extends BaseService
         $videoData['liked']    = VideoFavourite::where($conditions)->count();
         $videoData['tags']     = $videoData->tags;
         $videoData['related']  = $videoData->related()->take(5)->get(); //TODO add limit count 2 config & env
+        $videoData['playlist'] = $videoData->playlist()->with('videos')->first();
         return $videoData;
     }
 

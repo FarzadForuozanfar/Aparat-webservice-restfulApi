@@ -37,7 +37,7 @@ class Video extends Model
     //region relations
     public function playlist()
     {
-        return $this->belongsToMany(PlayList::class, 'playlists_videos')->first();
+        return $this->belongsToMany(PlayList::class, 'playlists_videos');
     }
 
     public function tags()

@@ -20,4 +20,12 @@ class PlaylistPolicy
     {
         return $user->id == $playList->user_id and $video->user_id == $user->id;
     }
+    public function sortVideos(User $user, PlayList $playList)
+    {
+        return $user->id == $playList->user_id;
+    }
+    public function show(User $user, PlayList $playList)
+    {
+        return $user->id == $playList->user_id;
+    }
 }

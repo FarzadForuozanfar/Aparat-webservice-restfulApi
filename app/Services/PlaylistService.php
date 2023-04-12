@@ -50,4 +50,23 @@ class PlaylistService extends BaseService
             return response(['message' => $exception->getMessage()], 500);
         }
     }
+
+    public static function sortVideo(Request $request)
+    {
+        try {
+            $request->playlist->videos()->detach($request->videos);
+            $request->playlist->videos()->attach($request->videos);
+            return response(['message' => 'لیست پخش با موفقیت مرتب سازی شد'], 200);
+        }
+        catch (Exception $exception)
+        {
+            Log::error($exception, $request->videos);
+            return response(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    public static function showVideos(Request $request)
+    {
+        return PlayList::with('videos')->find($request->playlist->id);
+    }
 }

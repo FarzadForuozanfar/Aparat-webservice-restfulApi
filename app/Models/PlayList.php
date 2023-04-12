@@ -18,7 +18,7 @@ class PlayList extends Model
     //region relations
     public function videos()
     {
-        return $this->belongsToMany(Video::class, 'playlists_videos');
+        return $this->belongsToMany(Video::class, 'playlists_videos')->orderBy('playlists_videos.id');
     }
 
     public function user()

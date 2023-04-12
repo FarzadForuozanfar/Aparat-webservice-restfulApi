@@ -133,7 +133,13 @@ Route::group(['middleware' => 'auth:api', 'prefix' => '/playlist'], function($ro
     $router->get('/my',
         [PlaylistController::class, 'My'])->name('playlist.my');
 
+    $router->get('/{playlist}/items',
+        [PlaylistController::class, 'ShowItems'])->name('playlist.show.items');
+
+    $router->match(['post', 'put'], '/{playlist}/sort', [PlaylistController::class, 'SortVideo'])->name('playlist.sortVideo');
+
     $router->match(['post', 'put'], '/{playlist}/{video}', [PlaylistController::class, 'AttachVideo'])->name('playlist.addVideo');
+
 });
 
 /**
