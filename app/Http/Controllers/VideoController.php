@@ -7,6 +7,7 @@ use App\Http\Requests\Video\LikedVideoRequest;
 use App\Http\Requests\Video\DeleteVideoRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\LikeVideoRequest;
+use App\Http\Requests\Video\ShowVideoCommentsRequest;
 use App\Http\Requests\Video\ShowVideoRequest;
 use App\Http\Requests\Video\RepublishVideoRequest;
 use App\Http\Requests\Video\StatisticsVideoRequest;

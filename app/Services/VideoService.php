@@ -291,6 +291,6 @@ class VideoService extends BaseService
 
     public static function showVideoComments(Request $request)
     {
-        return $request->video->comments()->paginate();
+        return sort_comments($request->video->comments()->paginate());//TODO just show accept comments & add paginate
     }
 }

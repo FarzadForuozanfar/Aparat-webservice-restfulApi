@@ -54,14 +54,29 @@ if (!function_exists('clear_storage')) {
 }
 if (!function_exists('clientIP')) {
     /**
-     *
+     * @param bool $withDate
      * @return string
      */
-    function clientIP($withDate = false): string
+    function clientIP(bool $withDate = false): string
     {
         $ip = $_SERVER['REMOTE_ADDR'] . '_' . md5($_SERVER['HTTP_USER_AGENT']);
         if($withDate)
             $ip .= '-' .now()->toDateString();
         return $ip;
+    }
+}
+if (!function_exists('sort_comments')) {
+    function sort_comments($comments, $parrentId = null) {
+        $result = [];
+
+        foreach ($comments as $comment) {
+            if ($comment->parent_id === $parrentId) {
+                $data = $comment->toArray();
+                $data['children'] = sort_comments($comments, $comment->id);
+                $result[] = $data;
+            }
+        }
+
+        return $result;
     }
 }
