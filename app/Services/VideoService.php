@@ -209,9 +209,10 @@ class VideoService extends BaseService
             $conditions['user_ip'] = clientIP();
             $conditions['user_id'] = auth('api')->id();
         }
-        $videoData          = $request->video;
-        $videoData['liked'] = VideoFavourite::where($conditions)->count();
-        $videoData['tags']  = $videoData->tags;
+        $videoData             = $request->video;
+        $videoData['liked']    = VideoFavourite::where($conditions)->count();
+        $videoData['tags']     = $videoData->tags;
+        $videoData['related']  = $videoData->related()->take(5)->get(); //TODO add limit count 2 config & env
         return $videoData;
     }
 

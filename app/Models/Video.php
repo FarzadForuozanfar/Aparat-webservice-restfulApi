@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\Pure;
 
@@ -57,6 +58,22 @@ class Video extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function related()
+    {
+        return static::selectRaw('COUNT(*) related_tags, videos.*')
+            ->leftJoin('video_tags', 'videos.id', '=', 'video_tags.video_id')
+            ->whereRaw('videos.id != ' . $this->id)
+            ->whereRaw("videos.state = '" . self::ACCEPT . "'")
+            ->whereIn(DB::raw('video_tags.tag_id'), function ($query) {
+                $query->selectRaw('video_tags.tag_id')
+                    ->from('videos')
+                    ->leftJoin('video_tags', 'videos.id', '=', 'video_tags.video_id')
+                    ->whereRaw('videos.id=' . $this->id);
+            })
+            ->groupBy(DB::raw('videos.id'))
+            ->orderBy('related_tags', 'desc');
     }
     //endregion relations
 
