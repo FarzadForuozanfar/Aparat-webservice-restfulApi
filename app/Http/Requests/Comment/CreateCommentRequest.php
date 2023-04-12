@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Comment;
 
-use App\Models\Comment;
+use App\Models\Video;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\In;
+use Illuminate\Support\Facades\Gate;
 
 class CreateCommentRequest extends FormRequest
 {
@@ -13,7 +13,8 @@ class CreateCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $parent_id = $this->get('parent_id', null);
+        return Gate::allows('createComment', [Video::find($this->video_id), $parent_id]);
     }
 
     /**
@@ -24,8 +25,8 @@ class CreateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video_id' => 'required|exists:videos,id', //TODO add rule just accept video
-            'parent_id' => 'nullable|exists:comments,id',
+            'video_id' => 'required|exists:videos,id',
+            'parent_id' => 'nullable|exists:comments,id',//TODO VideoID parent === VideoID child parent
             'body' => 'required|string|max:1000'
         ];
     }

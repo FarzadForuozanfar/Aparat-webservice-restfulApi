@@ -17,10 +17,13 @@ class CategoryIdRule implements ValidationRule
     {
         $this->categoryType = $categoryType;
     }
+
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param string $attribute
+     * @param mixed $value
+     * @param Closure $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

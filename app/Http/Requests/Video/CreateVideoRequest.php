@@ -34,7 +34,7 @@ class CreateVideoRequest extends FormRequest
             'tags'=> 'nullable|array',
             'tags.*'=>'exists:tags,id',
             'playlist'=> ['nullable', new OwnPlaylistRule()],
-            'channel_category'=> ['nullable', new CategoryIdRule(CategoryIdRule::PRIVATE_CATEGORIES)],
+            'channel_category'=> ['nullable', new CategoryIdRule(CategoryIdRule::ALL_CATEGORIES)],
             'banner'=> ['nullable', new UploadedVideoBannerId() ],
             'publish_at'=> 'nullable|date_format:Y-m-d H:i:s|after:now',
             'enable_comments'=>'required|boolean',

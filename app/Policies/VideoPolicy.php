@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Comment;
 use App\Models\RepublishVideo;
 use App\Models\User;
 use App\Models\Video;
@@ -97,5 +98,15 @@ class VideoPolicy
     public function update(User $user, Video $video): bool
     {
         return $user->id == $video->user_id;
+    }
+
+    public function createComment(User $user, Video $video, $parent_id = null)
+    {
+        if ($parent_id)
+        {
+            $video_parent = Comment::find($parent_id)->first();
+            return $video_parent->id == $video->id and $video->state == Video::ACCEPT;
+        }
+        return $video->state == Video::ACCEPT;
     }
 }
