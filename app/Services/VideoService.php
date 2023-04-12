@@ -6,6 +6,7 @@ use App\Events\DeleteVideoEvent;
 use App\Events\UploadNewVideo;
 use App\Events\VisitVideo;
 use App\Http\Requests\Video\LikeVideoRequest;
+use App\Models\Comment;
 use App\Models\PlayList;
 use App\Models\RepublishVideo;
 use App\Models\Video;
@@ -304,7 +305,7 @@ class VideoService extends BaseService
 
     public static function showVideoComments(Request $request)
     {
-        return sort_comments($request->video->comments()->paginate((int)config('app.pagination_limit.sm')));//TODO just show accept comments
+        return sort_comments($request->video->comments()->whereRaw("state = '" .Comment::ACCEPTED. "'")->get());//TODO paginate with parent id
     }
 
     public static function favoritesVideoList(Request $request)

@@ -66,11 +66,11 @@ if (!function_exists('clientIP')) {
     }
 }
 if (!function_exists('sort_comments')) {
-    function sort_comments($comments, $parrentId = null) {
+    function sort_comments($comments, $parentId = null) {
         $result = [];
 
         foreach ($comments as $comment) {
-            if ($comment->parent_id === $parrentId) {
+            if ($comment->parent_id === $parentId) {
                 $data = $comment->toArray();
                 $data['children'] = sort_comments($comments, $comment->id);
                 $result[] = $data;
