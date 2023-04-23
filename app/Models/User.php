@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -54,12 +55,15 @@ class User extends Authenticatable
     /**
      * find user o base email or mobile
      * @param $username
-     * @return User
      */
-    public function findForPassport($username): User
+    public function findForPassport($username)
     {
-        $user = static::withTrashed()->where('mobile',$username)->orwhere('email',$username)->first();
-        return $user;
+        try {
+            return static::withTrashed()->where('mobile',$username)->orwhere('email',$username)->first();
+        }
+        catch (\Exception $exception){
+            return response(['message' => $exception->getMessage()], 401);
+        }
     }
 
     public function setMobileAttribute($value)
