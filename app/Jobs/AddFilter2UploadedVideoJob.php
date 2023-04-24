@@ -18,23 +18,22 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private Video $video;
+    private string $videoSlug;
     private string|int $video_id;
     private $user;
     private bool $enable_watermark;
 
     /**
      * Create a new job instance.
-     * @param Video $video
+     * @param string $videoSlug
      * @param $video_id
      * @param bool $enable_watermark
      */
-    public function __construct(Video $video, $video_id, bool $enable_watermark)
+    public function __construct(string $videoSlug, $video_id, bool $enable_watermark)
     {
-
-        $this->video    = $video;
-        $this->video_id = $video_id;
-        $this->user     = auth()->user();
+        $this->videoSlug = $videoSlug;
+        $this->video_id  = $video_id;
+        $this->user      = auth()->user();
         $this->enable_watermark = $enable_watermark;
     }
 
@@ -44,7 +43,8 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
     public function handle(): void
     {
         $tmpPath = '/tmp/' . $this->video_id;
-        if (Video::where(['id' => $this->video->id])->count())
+        $video = Video::where(['slug' => $this->videoSlug]);
+        if ($video->count())
         {
             $channelName   = $this->user->channel->name;
             /** @var Media $videoFile */
@@ -58,21 +58,15 @@ class AddFilter2UploadedVideoJob implements ShouldQueue
                 $videoFile = $videoFile->addFilter($filter);
             }
             $videoFilter = $videoFile->export()->toDisk('video')->inFormat($format);
-            $videoFilter->save($this->user->id . '/' . $this->video->slug . '.mp4');
+            $videoFilter->save($this->user->id . '/' .$video->slug . '.mp4');
             Storage::disk('video')->delete($tmpPath);
-            $this->video->duration = $videoFile->getDurationInSeconds();
-            $this->video->state = Video::CONVERTED;
-            $this->video->save();
+           $video->duration = $videoFile->getDurationInSeconds();
+           $video->state = Video::CONVERTED;
+           $video->save();
         }
         Storage::disk('video')->delete($tmpPath);
     }
 
-    /**
-     * @return Video
-     */
-    public function getVideo(): Video
-    {
-        return $this->video;
-    }
+
 
 }

@@ -22,6 +22,6 @@ class ProcessUploadedVideo
     public function handle(UploadNewVideo $event): void
     {
         Log::info(date('Y-m-d H:i:s'), [$event->getVideo(), $event->getRequest()->video_id, $event->getRequest()->enable_watermark]);
-        AddFilter2UploadedVideoJob::dispatch($event->getVideo(), $event->getRequest()->video_id, $event->getRequest()->enable_watermark);
+        AddFilter2UploadedVideoJob::dispatch($event->getVideo()->slug, $event->getRequest()->video_id, $event->getRequest()->enable_watermark);
     }
 }
